@@ -415,7 +415,7 @@ html, body {
     }
 
     td {
-      padding: 10px;
+      padding: 5px;
     }
 
     tr:last-child {
@@ -427,7 +427,8 @@ html, body {
     }
 
     tr:nth-child(even)>td {
-      background-color: lighten($main-bg,2.4%);
+      // background-color: lighten($main-bg,2.4%);
+      background-color: #f3f7f9;
     }
   }
 
@@ -612,4 +613,8 @@ html, body {
 
 .highlight, .highlight .w {
   background-color: $code-bg;
+}
+
+.highlight .err {
+  color: #ccc; 
 }
