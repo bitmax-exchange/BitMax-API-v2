@@ -1,8 +1,10 @@
 ## WebSocket for Cash Trading
 
-`wss://bitmax.io/<account-group>/api/stream/cash-beta/<symbol>`
-
 <aside class="notice">This API is in beta version and is subject to change. </aside>
+
+**WebSocket URL**
+
+`wss://bitmax.io/<account-group>/api/stream/cash-beta/<symbol>`
 
 
 ### Data Channel - Market Depth

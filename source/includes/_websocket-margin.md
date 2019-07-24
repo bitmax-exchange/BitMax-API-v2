@@ -1,12 +1,10 @@
 ## WebSocket for Margin Trading
 
-`wss://bitmax.io/<account-group>/api/stream/margin-beta/<symbol>`
-
 <aside class="notice">This API is in beta version and is subject to change. </aside>
 
-A margin account allows you to increase your purchasing power beyond the account total balance by borrowing assets. Compare to cash trading, 
-margin trading has more complicated trading rules and may carry much greater risks. Please refer to 
-[BitMax.io Margin Trading Rules](https://bitmaxhelp.zendesk.com/hc/en-us/articles/360016415774-BitMax-io-Margin-Trading-Rules) for more details. 
+**WebSocket URL**
+
+`wss://bitmax.io/<account-group>/api/stream/margin-beta/<symbol>`
 
 
 ### Data Channel - Market Depth

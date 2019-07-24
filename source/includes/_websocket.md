@@ -10,17 +10,22 @@ wss://bitmax.io/3/api/stream/cash-beta/ETH-BTC
 wss://bitmax.io/3/api/stream/margin-beta/ETH-BTC
 ```
 
-**Cash trading data feed** (`api_path=stream/cash-beta`):
+**WebSocket URL**
 
-`wss://bitmax.io/<account-group>/api/stream/cash-beta/<symbol>`
+* cash trading: `wss://bitmax.io/<account-group>/api/stream/cash-beta/<symbol>`
+* margin trading:  `wss://bitmax.io/<account-group>/api/stream/margin-beta/<symbol>`
 
+Note: `<symbol>` in URLs above must be seperated by hyphen (`-`), e.g, `ETH-BTC`. Symbols separated by slash (`/`) are not allowed. 
 
-**Margin trading data feed** (`api_path=stream/cash-beta`):
+**Authorization**
 
-`wss://bitmax.io/<account-group>/api/stream/margin-beta/<symbol>`
+You must have view permission enabled for your API key to open websocket connection. If you want to place orders, you will need trade 
+permission enabled as well.
 
+You must sign the following messages and included the signature in the header:
 
-**Note**: `<symbol>` in URLs above must be seperated by hyphen (`-`), e.g, `ETH-BTC`. Symbols separated by slash (`/`) are not allowed. 
+* cash trading: `<timestamp>+stream/cash-beta`
+* margin trading: `<timestamp>+stream/cash-beta`
 
 
 ### WebSocket Authentication 
@@ -29,7 +34,7 @@ Connecting to websocket API follows almost the same authentication process as au
 fields in the request header:
 
 * `x-auth-key` - the API key with view permission. Trade permission is needed if you want to place orders.
-* `x-auth-signature` - the message signed using sha256 using the base64-decoded secret key on the prehash string `<timestamp>+api/stream`.
+* `x-auth-signature` - the request signature.
 * `x-auth-timestamp` - the current UTC timestamp in milliseconds.
 
 
