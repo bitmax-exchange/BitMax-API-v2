@@ -238,6 +238,23 @@
               </ul>
           </li>
           <li>
+            <a href="#restful-apis-margin-trading" class="toc-h1 toc-link" data-title="RESTful APIs - Margin Trading">RESTful APIs - Margin Trading</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-balance-of-one-asset-of-the-margin-account" class="toc-h2 toc-link" data-title="Get Balance of one Asset of the Margin Account">Get Balance of one Asset of the Margin Account</a>
+                  </li>
+                  <li>
+                    <a href="#list-all-balance-of-the-margin-account" class="toc-h2 toc-link" data-title="List all Balance of the Margin Account">List all Balance of the Margin Account</a>
+                  </li>
+                  <li>
+                    <a href="#transfer-asset-from-cash-account-to-margin-account" class="toc-h2 toc-link" data-title="Transfer Asset from Cash Account to Margin Account">Transfer Asset from Cash Account to Margin Account</a>
+                  </li>
+                  <li>
+                    <a href="#transfer-asset-from-margin-account-to-cash-account" class="toc-h2 toc-link" data-title="Transfer Asset from Margin Account to Cash Account">Transfer Asset from Margin Account to Cash Account</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#websocket-api-beta-version" class="toc-h1 toc-link" data-title="WebSocket API (Beta Version)">WebSocket API (Beta Version)</a>
               <ul class="toc-list-h2">
                   <li>
@@ -251,6 +268,9 @@
                   </li>
               </ul>
           </li>
+          <li>
+            <a href="#error-codes" class="toc-h1 toc-link" data-title="Error Codes">Error Codes</a>
+          </li>
       </ul>
         <ul class="toc-footer">
             <li><a href='https://bitmax.io'>BitMax.io</a></li>
@@ -261,8 +281,9 @@
       <div class="content">
         <h1 id='bitmax-api-documentation-v2'>BitMax API Documentation V2</h1>
 <p>This document contains new <code>v2</code> APIs with improved features. At the moment, only limited functionality is supported. However, we plan
-to increase coverage extensively. Meanwhile, please refer to <a href="https://github.com/bitmax-exchange/api-doc">BitMax | API Document</a> for a 
-more complete set of APIs. </p>
+to increase coverage extensively. </p>
+
+<p>Meanwhile, please refer to <a href="https://github.com/bitmax-exchange/api-doc">BitMax | API Document</a> for a more complete set of APIs. </p>
 
 <aside class="warning">Please note that this document contains beta APIs subject to further changes.</aside>
 <h1 id='authentication'>Authentication</h1>
@@ -430,6 +451,116 @@ the <code>code</code> field with value other than <code>0</code> and a <code>mes
 <td>Unable to verify API signature: signature mismatch.</td>
 </tr>
 </tbody></table>
+<h1 id='restful-apis-margin-trading'>RESTful APIs - Margin Trading</h1>
+<p>A margin account allows you to increase your purchasing power beyond the account total balance by borrowing assets. Compare to cash trading, 
+margin trading has more complicated trading rules and may carry much greater risks. Please refer to 
+<a href="https://bitmaxhelp.zendesk.com/hc/en-us/articles/360016415774-BitMax-io-Margin-Trading-Rules">BitMax.io Margin Trading Rules</a> for more details. </p>
+<h2 id='get-balance-of-one-asset-of-the-margin-account'>Get Balance of one Asset of the Margin Account</h2>
+<p><a href="https://github.com/bitmax-exchange/api-doc/blob/master/bitmax-api-doc-v1.2.md#get-balance-of-one-asset-of-the-margin-account-api_pathmarginbalance">Margin Balance - Single Balance V1</a></p>
+<h2 id='list-all-balance-of-the-margin-account'>List all Balance of the Margin Account</h2>
+<p><a href="https://github.com/bitmax-exchange/api-doc/blob/master/bitmax-api-doc-v1.2.md#list-all-balances-of-the-margin-account-api_pathmarginbalance">Margin Balance - All V1</a></p>
+<h2 id='transfer-asset-from-cash-account-to-margin-account'>Transfer Asset from Cash Account to Margin Account</h2>
+<blockquote>
+<p>Request Body - Transfer Asset from Cash Account to Margin Account</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"asset"</span><span class="p">:</span><span class="w">  </span><span class="s2">"BTC"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.05"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"requestId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ftWU30JpY08Eu8MwmfYPzUX47QkUtsys"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx@xxx.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">request</span><span class="w"> </span><span class="err">has</span><span class="w"> </span><span class="err">been</span><span class="w"> </span><span class="err">submitted</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">server</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p><strong>HTTP Request</strong></p>
+
+<p><code>POST &lt;account-group&gt;/api/v2/margin/transfer/deposit</code></p>
+
+<p><strong>Authentication</strong></p>
+
+<p>You must have transfer permission enabled for the API key.</p>
+
+<p>You must sign message <code>&lt;timestamp&gt;+margin/transfer/deposit</code> and included the signature in the header.</p>
+
+<p><strong>Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>asset</td>
+<td>String</td>
+<td>Asset code, e.g. <code>&quot;BTC&quot;</code></td>
+</tr>
+<tr>
+<td>amount</td>
+<td>String</td>
+<td>The amount to transfer in string format</td>
+</tr>
+</tbody></table>
+<h2 id='transfer-asset-from-margin-account-to-cash-account'>Transfer Asset from Margin Account to Cash Account</h2>
+<blockquote>
+<p>Request Body - Transfer Asset from Margin Account to Cash Account</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"asset"</span><span class="p">:</span><span class="w">  </span><span class="s2">"BTC"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.05"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"requestId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"L00HCI4uUQvFLFpguNC8B9zWANGZsJKV"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx@xxx.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">request</span><span class="w"> </span><span class="err">has</span><span class="w"> </span><span class="err">been</span><span class="w"> </span><span class="err">submitted</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">server</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p><strong>HTTP Request</strong></p>
+
+<p><code>POST &lt;account-group&gt;/api/v2/margin/transfer/withdraw</code></p>
+
+<p><strong>Authentication</strong></p>
+
+<p>You must have transfer permission enabled for the API key.</p>
+
+<p>You must sign message <code>&lt;timestamp&gt;+margin/transfer/withdraw</code> and included the signature in the header.</p>
+
+<p><strong>Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>asset</td>
+<td>String</td>
+<td>Asset code, e.g. <code>&quot;BTC&quot;</code></td>
+</tr>
+<tr>
+<td>amount</td>
+<td>String</td>
+<td>The amount to transfer in string format</td>
+</tr>
+</tbody></table>
 <h1 id='websocket-api-beta-version'>WebSocket API (Beta Version)</h1><h2 id='websocket-data-feed'>WebSocket Data Feed</h2>
 <blockquote>
 <p>websocket URL examples:</p>
@@ -437,22 +568,33 @@ the <code>code</code> field with value other than <code>0</code> and a <code>mes
 <pre class="highlight plaintext"><code>wss://bitmax.io/3/api/stream/cash-beta/ETH-BTC
 wss://bitmax.io/3/api/stream/margin-beta/ETH-BTC
 </code></pre>
-<p><strong>Cash trading data feed</strong> (<code>api_path=stream/cash-beta</code>):</p>
+<p><strong>WebSocket URL</strong></p>
 
-<p><code>wss://bitmax.io/&lt;account-group&gt;/api/stream/cash-beta/&lt;symbol&gt;</code></p>
+<ul>
+<li>cash trading: <code>wss://bitmax.io/&lt;account-group&gt;/api/stream/cash-beta/&lt;symbol&gt;</code></li>
+<li>margin trading:  <code>wss://bitmax.io/&lt;account-group&gt;/api/stream/margin-beta/&lt;symbol&gt;</code></li>
+</ul>
 
-<p><strong>Margin trading data feed</strong> (<code>api_path=stream/cash-beta</code>):</p>
+<p>Note: <code>&lt;symbol&gt;</code> in URLs above must be seperated by hyphen (<code>-</code>), e.g, <code>ETH-BTC</code>. Symbols separated by slash (<code>/</code>) are not allowed. </p>
 
-<p><code>wss://bitmax.io/&lt;account-group&gt;/api/stream/margin-beta/&lt;symbol&gt;</code></p>
+<p><strong>Authorization</strong></p>
 
-<p><strong>Note</strong>: <code>&lt;symbol&gt;</code> in URLs above must be seperated by hyphen (<code>-</code>), e.g, <code>ETH-BTC</code>. Symbols separated by slash (<code>/</code>) are not allowed. </p>
+<p>You must have view permission enabled for your API key to open websocket connection. If you want to place orders, you will need trade 
+permission enabled as well.</p>
+
+<p>You must sign the following messages and included the signature in the header:</p>
+
+<ul>
+<li>cash trading: <code>&lt;timestamp&gt;+stream/cash-beta</code></li>
+<li>margin trading: <code>&lt;timestamp&gt;+stream/cash-beta</code></li>
+</ul>
 <h3 id='websocket-authentication'>WebSocket Authentication</h3>
 <p>Connecting to websocket API follows almost the same authentication process as authenticated RESTful APIs. You need to include the following
 fields in the request header:</p>
 
 <ul>
 <li><code>x-auth-key</code> - the API key with view permission. Trade permission is needed if you want to place orders.</li>
-<li><code>x-auth-signature</code> - the message signed using sha256 using the base64-decoded secret key on the prehash string <code>&lt;timestamp&gt;+api/stream</code>.</li>
+<li><code>x-auth-signature</code> - the request signature.</li>
 <li><code>x-auth-timestamp</code> - the current UTC timestamp in milliseconds.</li>
 </ul>
 <h3 id='subscribe-to-websocket-streams'>Subscribe to WebSocket Streams</h3>
@@ -504,9 +646,11 @@ in plain text format and contains the following fields:</p>
 </tr>
 </tbody></table>
 <h2 id='websocket-for-cash-trading'>WebSocket for Cash Trading</h2>
-<p><code>wss://bitmax.io/&lt;account-group&gt;/api/stream/cash-beta/&lt;symbol&gt;</code></p>
-
 <aside class="notice">This API is in beta version and is subject to change. </aside>
+
+<p><strong>WebSocket URL</strong></p>
+
+<p><code>wss://bitmax.io/&lt;account-group&gt;/api/stream/cash-beta/&lt;symbol&gt;</code></p>
 <h3 id='data-channel-market-depth'>Data Channel - Market Depth</h3>
 <blockquote>
 <p>Market Depth Data</p>
@@ -1011,13 +1155,11 @@ We stream bar data in batches. Every 30 seconds, we stream bar data messages at 
 </tr>
 </tbody></table>
 <h2 id='websocket-for-margin-trading'>WebSocket for Margin Trading</h2>
-<p><code>wss://bitmax.io/&lt;account-group&gt;/api/stream/margin-beta/&lt;symbol&gt;</code></p>
-
 <aside class="notice">This API is in beta version and is subject to change. </aside>
 
-<p>A margin account allows you to increase your purchasing power beyond the account total balance by borrowing assets. Compare to cash trading, 
-margin trading has more complicated trading rules and may carry much greater risks. Please refer to 
-<a href="https://bitmaxhelp.zendesk.com/hc/en-us/articles/360016415774-BitMax-io-Margin-Trading-Rules">BitMax.io Margin Trading Rules</a> for more details. </p>
+<p><strong>WebSocket URL</strong></p>
+
+<p><code>wss://bitmax.io/&lt;account-group&gt;/api/stream/margin-beta/&lt;symbol&gt;</code></p>
 <h3 id='data-channel-market-depth'>Data Channel - Market Depth</h3>
 <p>See <a href="#data-channel-market-depth">cash trading market depth</a></p>
 <h3 id='data-channel-market-trades'>Data Channel - Market Trades</h3>
@@ -1126,6 +1268,24 @@ If cushion rate is defined but below 1, your account could be liquidated at any 
 </ul>
 
 <p>The server emits the <code>margin-balance</code> message along with reference prices updates. </p>
+<h1 id='error-codes'>Error Codes</h1>
+<p>(Work in progress)</p>
+
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>21008</td>
+<td>API key does not have transfer permission</td>
+</tr>
+<tr>
+<td>6010</td>
+<td>Not enough balance</td>
+</tr>
+</tbody></table>
 
       </div>
       <div class="dark-box">
