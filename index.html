@@ -201,7 +201,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;,&quot;javascript&quot;]">
+  <body class="index" data-languages="[&quot;shell&quot;,&quot;python&quot;,&quot;java&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -212,9 +212,8 @@
       <img src="images/logo.png" class="logo" alt="Logo" />
         <div class="lang-selector">
               <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
               <a href="#" data-language-name="python">python</a>
-              <a href="#" data-language-name="javascript">javascript</a>
+              <a href="#" data-language-name="java">java</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -222,282 +221,918 @@
         <ul class="search-results"></ul>
       <ul id="toc" class="toc-list-h1">
           <li>
-            <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+            <a href="#bitmax-api-documentation-v2" class="toc-h1 toc-link" data-title="BitMax API Documentation V2">BitMax API Documentation V2</a>
           </li>
           <li>
             <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
-          </li>
-          <li>
-            <a href="#kittens" class="toc-h1 toc-link" data-title="Kittens">Kittens</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-all-kittens" class="toc-h2 toc-link" data-title="Get All Kittens">Get All Kittens</a>
+                    <a href="#creating-a-request" class="toc-h2 toc-link" data-title="Creating a Request">Creating a Request</a>
                   </li>
                   <li>
-                    <a href="#get-a-specific-kitten" class="toc-h2 toc-link" data-title="Get a Specific Kitten">Get a Specific Kitten</a>
+                    <a href="#signing-a-request" class="toc-h2 toc-link" data-title="Signing a Request">Signing a Request</a>
                   </li>
                   <li>
-                    <a href="#delete-a-specific-kitten" class="toc-h2 toc-link" data-title="Delete a Specific Kitten">Delete a Specific Kitten</a>
+                    <a href="#error-code" class="toc-h2 toc-link" data-title="Error Code">Error Code</a>
                   </li>
               </ul>
           </li>
           <li>
-            <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
+            <a href="#websocket-api-beta-version" class="toc-h1 toc-link" data-title="WebSocket API (Beta Version)">WebSocket API (Beta Version)</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#websocket-data-feed" class="toc-h2 toc-link" data-title="WebSocket Data Feed">WebSocket Data Feed</a>
+                  </li>
+                  <li>
+                    <a href="#websocket-for-cash-trading" class="toc-h2 toc-link" data-title="WebSocket for Cash Trading">WebSocket for Cash Trading</a>
+                  </li>
+                  <li>
+                    <a href="#websocket-for-margin-trading" class="toc-h2 toc-link" data-title="WebSocket for Margin Trading">WebSocket for Margin Trading</a>
+                  </li>
+              </ul>
           </li>
       </ul>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/lord/slate'>Documentation Powered by Slate</a></li>
+            <li><a href='https://bitmax.io'>BitMax.io</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+        <h1 id='bitmax-api-documentation-v2'>BitMax API Documentation V2</h1>
+<p>This document contains new <code>v2</code> APIs with improved features. At the moment, only limited functionality is supported. However, we plan
+to increase coverage extensively. Meanwhile, please refer to <a href="https://github.com/bitmax-exchange/api-doc">BitMax | API Document</a> for a 
+more complete set of APIs. </p>
 
-<p>We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
-
-<p>This example API documentation page was created with <a href="https://github.com/lord/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&#39;s documentation.</p>
+<aside class="warning">Please note that this document contains beta APIs subject to further changes.</aside>
 <h1 id='authentication'>Authentication</h1>
+<p>The authentication process for <code>v2</code> APIs are a bit different from the old version:</p>
+
+<ul>
+<li>We now enforce strong timestamp check.</li>
+<li>The response of the API call is more informative in case of authentication failure. </li>
+</ul>
+<h2 id='creating-a-request'>Creating a Request</h2>
+<p>To access private data, you must include the following headers:</p>
+
+<ul>
+<li><code>x-auth-key</code> - required, the api key as a string. </li>
+<li><code>x-auth-timestamp</code> - required, the UTC timestamp in milliseconds of your request</li>
+<li><code>x-auth-signature</code> - required, the request signature (see #signing-a-request)</li>
+<li><code>x-auth-coid</code> - the request Id, only required certain APIs (such as placing/canceling orders)</li>
+</ul>
+<h2 id='signing-a-request'>Signing a Request</h2>
 <blockquote>
-<p>To authorize, use this code:</p>
+<p>Signing a request</p>
 </blockquote>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<pre class="highlight shell tab-shell"><code><span class="c"># bash </span>
+<span class="nv">APIPATH</span><span class="o">=</span>user/info
+<span class="nv">APIKEY</span><span class="o">=</span>CEcrjGyipqt0OflgdQQSRGdrDXdDUY2x
+<span class="nv">SECRET</span><span class="o">=</span>hV8FgjyJtpvVeAcMAgzgAFQCN36wmbWuN7o3WPcYcYhFd8qvE43gzFGVsFcCqMNk
+<span class="nv">TIMESTAMP</span><span class="o">=</span><span class="sb">`</span>date +%s%N | cut -c -13<span class="sb">`</span> <span class="c"># 1562952827927</span>
+<span class="nv">MESSAGE</span><span class="o">=</span><span class="nv">$TIMESTAMP</span>+<span class="nv">$APIPATH</span>
+<span class="nv">SIGNATURE</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> -n <span class="nv">$MESSAGE</span> | openssl dgst -sha256 -hmac <span class="nv">$SECRET</span> -binary | base64<span class="sb">`</span>
+<span class="nb">echo</span> <span class="nv">$SIGNATURE</span>  <span class="c"># vBZf8OQuiTJIVbNpNHGY3zcUsK5gJpwb5lgCgarpxYI=</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+curl -X GET -i <span class="se">\</span>
+  -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"x-auth-key: </span><span class="nv">$APIKEY</span><span class="s2">"</span> <span class="se">\</span>
+  -H <span class="s2">"x-auth-signature: </span><span class="nv">$SIGNATURE</span><span class="s2">"</span> <span class="se">\</span>
+  -H <span class="s2">"x-auth-timestamp: </span><span class="nv">$TIMESTAMP</span><span class="s2">"</span> <span class="se">\</span>
+  https://bitmax.io/api/v1/user/info
+</code></pre><pre class="highlight python tab-python"><code><span class="c"># python 3.6+</span>
+<span class="kn">import</span> <span class="nn">time</span><span class="p">,</span> <span class="n">hmac</span><span class="p">,</span> <span class="n">hashlib</span><span class="p">,</span> <span class="n">base64</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+<span class="n">api_path</span>  <span class="o">=</span> <span class="s">"user/info"</span>
+<span class="n">api_key</span>   <span class="o">=</span> <span class="s">"CEcrjGyipqt0OflgdQQSRGdrDXdDUY2x"</span>
+<span class="n">sec_key</span>   <span class="o">=</span> <span class="s">"hV8FgjyJtpvVeAcMAgzgAFQCN36wmbWuN7o3WPcYcYhFd8qvE43gzFGVsFcCqMNk"</span>
+<span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">))</span> <span class="c"># 1562952827927</span>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
+<span class="n">message</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">f</span><span class="s">"{timestamp}+{api_path}"</span><span class="p">,</span> <span class="s">'utf-8'</span><span class="p">)</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">sec_key</span><span class="p">,</span> <span class="s">'utf-8'</span><span class="p">)</span>
+
+<span class="n">signature</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">digestmod</span><span class="o">=</span><span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">())</span>
+
+<span class="n">header</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"x-auth-key"</span><span class="p">:</span> <span class="n">api_key</span><span class="p">,</span>
+  <span class="s">"x-auth-signature"</span><span class="p">:</span> <span class="n">signature</span><span class="p">,</span> 
+  <span class="s">"x-auth-timestamp"</span><span class="p">:</span> <span class="n">timestamp</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="k">print</span><span class="p">(</span><span class="n">signature</span><span class="p">)</span>  <span class="c"># b'vBZf8OQuiTJIVbNpNHGY3zcUsK5gJpwb5lgCgarpxYI='</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">javax.crypto.Mac</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.crypto.spec.SecretKeySpec</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.commons.codec.binary.Base64</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SignatureExample</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="kt">long</span> <span class="n">timestamp</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span> <span class="c1">// 1562952827927</span>
+      <span class="n">String</span> <span class="n">api_path</span> <span class="o">=</span> <span class="s">"user/info"</span><span class="o">;</span>
+      <span class="n">String</span> <span class="n">secret</span> <span class="o">=</span> <span class="s">"hV8FgjyJtpvVeAcMAgzgAFQCN36wmbWuN7o3WPcYcYhFd8qvE43gzFGVsFcCqMNk"</span><span class="o">;</span>
+      <span class="n">String</span> <span class="n">message</span> <span class="o">=</span> <span class="n">timestamp</span> <span class="o">+</span> <span class="s">"+"</span> <span class="o">+</span> <span class="n">api_path</span><span class="o">;</span>
+
+      <span class="n">Mac</span> <span class="n">sha256_HMAC</span> <span class="o">=</span> <span class="n">Mac</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">"HmacSHA256"</span><span class="o">);</span>
+      <span class="n">SecretKeySpec</span> <span class="n">secret_key</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SecretKeySpec</span><span class="o">(</span><span class="n">secret</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(),</span> <span class="s">"HmacSHA256"</span><span class="o">);</span>
+      <span class="n">sha256_HMAC</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="n">secret_key</span><span class="o">);</span>
+
+      <span class="n">String</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">Base64</span><span class="o">.</span><span class="na">encodeBase64String</span><span class="o">(</span><span class="n">sha256_HMAC</span><span class="o">.</span><span class="na">doFinal</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getBytes</span><span class="o">()));</span>
+      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">hash</span><span class="o">);</span> <span class="c1">// vBZf8OQuiTJIVbNpNHGY3zcUsK5gJpwb5lgCgarpxYI=</span>
+    <span class="o">}</span>
+    <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Error"</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 </code></pre>
+<p>To query APIs with private data, you must include a signature using base64 encoded HMAC sha256 algorithm.</p>
+<h2 id='error-code'>Error Code</h2>
 <blockquote>
-<p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
+<p>Example: HTTP response when authentication failed</p>
 </blockquote>
+<pre class="highlight json tab-json"><code><span class="err">//</span><span class="w"> </span><span class="err">HTTP</span><span class="w"> </span><span class="err">Response</span><span class="w"> </span><span class="err">Status</span><span class="w"> </span><span class="err">Code</span><span class="p">:</span><span class="w"> </span><span class="mi">405</span><span class="w"> </span><span class="err">-</span><span class="w"> </span><span class="err">Method</span><span class="w"> </span><span class="err">Not</span><span class="w"> </span><span class="err">Allowed</span><span class="w">
+</span><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w">  </span><span class="mi">21001</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"msg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx"</span><span class="p">,</span><span class="w"> 
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>If authentication failed, the server will response with <code>status code</code> other than <code>200 OK</code>. The respond body will contain more details including
+the <code>code</code> field with value other than <code>0</code> and a <code>message</code> field with text explaining why the authentication failed. </p>
 
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
+<p>The table below lists all possible server responses if the request is rejected due to authentication failure. </p>
 
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code>Authorization: meowmeowmeow</code></p>
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-<h1 id='kittens'>Kittens</h1><h2 id='get-all-kittens'>Get All Kittens</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>ErrorCode</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>405 Method Not Allowed</td>
+<td>21001</td>
+<td>API Access is currently disabled.</td>
+</tr>
+<tr>
+<td>400 Bad Request</td>
+<td>21002</td>
+<td>API header is missing.</td>
+</tr>
+<tr>
+<td>400 Bad Request</td>
+<td>21003</td>
+<td>Request ID Mismatch.</td>
+</tr>
+<tr>
+<td>400 Bad Request</td>
+<td>21004</td>
+<td>API request header error: invalid timestamp. This typically means the timestamp in request header differs from system time by more than 60 seconds.</td>
+</tr>
+<tr>
+<td>400 Bad Request</td>
+<td>21006</td>
+<td>Unable to find API key.</td>
+</tr>
+<tr>
+<td>410 Gone</td>
+<td>21005</td>
+<td>Unable to verify API signature: expired timestamp.</td>
+</tr>
+<tr>
+<td>403 Forbidden</td>
+<td>21007</td>
+<td>API key does not have view permission.</td>
+</tr>
+<tr>
+<td>403 Forbidden</td>
+<td>21010</td>
+<td>API key does not have withdraw permission.</td>
+</tr>
+<tr>
+<td>403 Forbidden</td>
+<td>21009</td>
+<td>API key does not have trade permission.</td>
+</tr>
+<tr>
+<td>403 Forbidden</td>
+<td>21008</td>
+<td>API key does not have transfer permission.</td>
+</tr>
+<tr>
+<td>401 Unauthorized</td>
+<td>2012</td>
+<td>Account group mismatch.</td>
+</tr>
+<tr>
+<td>401 Unauthorized</td>
+<td>21011</td>
+<td>Unable to verify API signature: signature mismatch.</td>
+</tr>
+</tbody></table>
+<h1 id='websocket-api-beta-version'>WebSocket API (Beta Version)</h1><h2 id='websocket-data-feed'>WebSocket Data Feed</h2>
+<blockquote>
+<p>websocket URL examples:</p>
+</blockquote>
+<pre class="highlight plaintext"><code>wss://bitmax.io/3/api/stream/cash-beta/ETH-BTC
+wss://bitmax.io/3/api/stream/margin-beta/ETH-BTC
 </code></pre>
+<p><strong>Cash trading data feed</strong> (<code>api_path=stream/cash-beta</code>):</p>
+
+<p><code>wss://bitmax.io/&lt;account-group&gt;/api/stream/cash-beta/&lt;symbol&gt;</code></p>
+
+<p><strong>Margin trading data feed</strong> (<code>api_path=stream/cash-beta</code>):</p>
+
+<p><code>wss://bitmax.io/&lt;account-group&gt;/api/stream/margin-beta/&lt;symbol&gt;</code></p>
+
+<p><strong>Note</strong>: <code>&lt;symbol&gt;</code> in URLs above must be seperated by hyphen (<code>-</code>), e.g, <code>ETH-BTC</code>. Symbols separated by slash (<code>/</code>) are not allowed. </p>
+<h3 id='websocket-authentication'>WebSocket Authentication</h3>
+<p>Connecting to websocket API follows almost the same authentication process as authenticated RESTful APIs. You need to include the following
+fields in the request header:</p>
+
+<ul>
+<li><code>x-auth-key</code> - the API key with view permission. Trade permission is needed if you want to place orders.</li>
+<li><code>x-auth-signature</code> - the message signed using sha256 using the base64-decoded secret key on the prehash string <code>&lt;timestamp&gt;+api/stream</code>.</li>
+<li><code>x-auth-timestamp</code> - the current UTC timestamp in milliseconds.</li>
+</ul>
+<h3 id='subscribe-to-websocket-streams'>Subscribe to WebSocket Streams</h3>
+<p>After connecting to websocket, you need to send an <code>subscribe</code> message to start receiving data. The subscribe message is a JSON object 
+in plain text format and contains the following fields:</p>
+
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>Subscribe Message</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"messageType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"subscribe"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"marketDepthLevel"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"recentTradeMaxCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"skipSummary"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"skipBars"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<table><thead>
+<tr>
+<th>Field Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>messageType</code></td>
+<td>String</td>
+<td>set this field to <code>subscribe</code> in the subscribe message.</td>
+</tr>
+<tr>
+<td><code>marketDepthLevel</code></td>
+<td>Integer</td>
+<td>optional, default value 20. This field specifies the max number of price levels on each side to be included in the first market depth message.</td>
+</tr>
+<tr>
+<td><code>recentTradeMaxCount</code></td>
+<td>Integer</td>
+<td>optional, default value 20. This field specifies the max number of recent trades to be included in the first market trades message.</td>
+</tr>
+<tr>
+<td><code>skipSummary</code></td>
+<td>Boolean</td>
+<td>optional, default value <code>false</code>. If <code>true</code>, client will receive market summary data with rolling 24 hour O/H/L/C price data for all symbols every 30 seconds.</td>
+</tr>
+<tr>
+<td><code>skipBars</code></td>
+<td>Boolean</td>
+<td>optional, default value <code>false</code>. If <code>true</code>, client will receive bar data of all frequencies (1 minute, 5 minutes, etc.) for the current symbol every 30 seconds.</td>
+</tr>
+</tbody></table>
+<h2 id='websocket-for-cash-trading'>WebSocket for Cash Trading</h2>
+<p><code>wss://bitmax.io/&lt;account-group&gt;/api/stream/cash-beta/&lt;symbol&gt;</code></p>
+
+<aside class="notice">This API is in beta version and is subject to change. </aside>
+<h3 id='data-channel-market-depth'>Data Channel - Market Depth</h3>
+<blockquote>
+<p>Market Depth Data</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+   </span><span class="s2">"m"</span><span class="p">:</span><span class="w">      </span><span class="s2">"depth"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"s"</span><span class="p">:</span><span class="w">      </span><span class="s2">"ETH/BTC"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"ts"</span><span class="p">:</span><span class="w">     </span><span class="mi">1557422548511</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"seqnum"</span><span class="p">:</span><span class="w"> </span><span class="mi">604599926</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"asks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+       </span><span class="p">[</span><span class="s2">"13.45"</span><span class="p">,</span><span class="w"> </span><span class="s2">"59.16"</span><span class="p">],</span><span class="w">
+       </span><span class="p">[</span><span class="s2">"13.37"</span><span class="p">,</span><span class="w"> </span><span class="s2">"95.04"</span><span class="p">],</span><span class="w">   
+       </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"bids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+       </span><span class="p">[</span><span class="s2">"13.21"</span><span class="p">,</span><span class="w"> </span><span class="s2">"60.17"</span><span class="p">],</span><span class="w">
+       </span><span class="p">[</span><span class="s2">"13.10"</span><span class="p">,</span><span class="w"> </span><span class="s2">"13.39"</span><span class="p">],</span><span class="w">
+       </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
+   </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Each market depth message is a JSON object containing the current quantity at specific prices levels. There is no direct way of getting the top-of-the-book data through websocket. 
+You need to maintain the current depth book and derive the best bid/ask. This can be done by two steps:</p>
+
+<ul>
+<li>Use the first depth message to build the initial depth book.</li>
+<li>Use later messages to update the depth book. Messages contain the new total size at the indicated price level. 
+You should replace the old quantity using message received. When the replacement quantity is zero, it means there 
+is no order sitting on the corresponding price level.</li>
+</ul>
+
+<p>Each market depth message contains the following field:</p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>m</code></td>
+<td>String</td>
+<td>message type, <code>&quot;depth&quot;</code></td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>String</td>
+<td>symbol</td>
+</tr>
+<tr>
+<td><code>ts</code></td>
+<td>Long</td>
+<td>timestamp when the message is generated</td>
+</tr>
+<tr>
+<td><code>seqnum</code></td>
+<td>Long</td>
+<td>sequence number</td>
+</tr>
+<tr>
+<td><code>asks</code></td>
+<td>Sequence</td>
+<td>ask levels, each element in the sequence contains <code>[price, quantity]</code>. <code>price</code> and <code>quantity</code> are of String type.</td>
+</tr>
+<tr>
+<td><code>bids</code></td>
+<td>Sequence</td>
+<td>bid levels</td>
+</tr>
+</tbody></table>
+<h3 id='data-channel-market-trades'>Data Channel - Market Trades</h3>
+<blockquote>
+<p>Market Trades Data</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"m"</span><span class="p">:</span><span class="w"> </span><span class="s2">"marketTrades"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ETH/BTC"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"trades"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"p"</span><span class="p">:</span><span class="w">  </span><span class="s2">"13.75"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"q"</span><span class="p">:</span><span class="w">  </span><span class="s2">"6.68"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"t"</span><span class="p">:</span><span class="w">  </span><span class="mi">1528988084944</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"bm"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"p"</span><span class="p">:</span><span class="w">  </span><span class="s2">"13.75"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"q"</span><span class="p">:</span><span class="w">  </span><span class="s2">"6.68"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"t"</span><span class="p">:</span><span class="w">  </span><span class="mi">1528988084944</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"bm"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Each start receiving continuous market trade stream. All market trades messages follow the same structure, which contains one or more trades.</p>
+
+<p>Each market depth message contains the following field:</p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>m</code></td>
+<td>String</td>
+<td>message type, <code>&quot;marketTrades&quot;</code></td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>String</td>
+<td>symbol</td>
+</tr>
+<tr>
+<td><code>trades</code></td>
+<td>Sequence</td>
+<td>List of objects containing recent trade data (see below)</td>
+</tr>
+</tbody></table>
+
+<p>Each element in <code>trades</code> is an object containing recent trade data with the following fields:</p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>p</code></td>
+<td>String</td>
+<td>price</td>
+</tr>
+<tr>
+<td><code>q</code></td>
+<td>String</td>
+<td>quantity</td>
+</tr>
+<tr>
+<td><code>t</code></td>
+<td>Long</td>
+<td>timestamp</td>
+</tr>
+<tr>
+<td><code>bm</code></td>
+<td>Boolean</td>
+<td>if <code>true</code>, the buyer of the trade is the market maker</td>
+</tr>
+</tbody></table>
+<h3 id='data-channel-market-summary'>Data Channel - Market Summary</h3>
+<blockquote>
+<p>Market Summary Data</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"m"</span><span class="p">:</span><span class="w">  </span><span class="s2">"summary"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"s"</span><span class="p">:</span><span class="w">  </span><span class="s2">"ETH/BTC"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ba"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ETH"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"qa"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"i"</span><span class="p">:</span><span class="w">  </span><span class="s2">"1d"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"t"</span><span class="p">:</span><span class="w">  </span><span class="mi">1528988000000</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"o"</span><span class="p">:</span><span class="w">  </span><span class="s2">"3.24"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"c"</span><span class="p">:</span><span class="w">  </span><span class="s2">"3.56"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"h"</span><span class="p">:</span><span class="w">  </span><span class="s2">"3.77"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"l"</span><span class="p">:</span><span class="w">  </span><span class="s2">"3.21"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"v"</span><span class="p">:</span><span class="w">  </span><span class="s2">"10.234"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Each market summary data record contains current information about a single product. The data is streamed in batches - we stream out market data of all products every 30 seconds. Set <code>skipSummary = true</code> 
+in the subscribe message to turn it on.</p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>m</code></td>
+<td>String</td>
+<td>&quot;summary&quot;</td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>String</td>
+<td>product symbol</td>
+</tr>
+<tr>
+<td><code>ba</code></td>
+<td>String</td>
+<td>base asset</td>
+</tr>
+<tr>
+<td><code>qa</code></td>
+<td>String</td>
+<td>quote asset</td>
+</tr>
+<tr>
+<td><code>i</code></td>
+<td>String</td>
+<td>bar interval, for market summary data, the interval is always <code>1d</code></td>
+</tr>
+<tr>
+<td><code>t</code></td>
+<td>Long</td>
+<td>UTC timestamp in milliseconds</td>
+</tr>
+<tr>
+<td><code>o</code></td>
+<td>String</td>
+<td>open</td>
+</tr>
+<tr>
+<td><code>c</code></td>
+<td>String</td>
+<td>close</td>
+</tr>
+<tr>
+<td><code>h</code></td>
+<td>String</td>
+<td>high</td>
+</tr>
+<tr>
+<td><code>l</code></td>
+<td>String</td>
+<td>low</td>
+</tr>
+<tr>
+<td><code>v</code></td>
+<td>String</td>
+<td>volume</td>
+</tr>
+</tbody></table>
+<h3 id='data-channel-bar-data'>Data Channel - Bar Data</h3>
+<blockquote>
+<p>Bar Chart Data</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"m"</span><span class="p">:</span><span class="w">  </span><span class="s2">"bar"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"s"</span><span class="p">:</span><span class="w">  </span><span class="s2">"ETH/BTC"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ba"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ETH"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"qa"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"i"</span><span class="p">:</span><span class="w">  </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"t"</span><span class="p">:</span><span class="w">  </span><span class="mi">1528988500000</span><span class="p">,</span><span class="w"> 
+  </span><span class="s2">"o"</span><span class="p">:</span><span class="w">  </span><span class="s2">"3.24"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"c"</span><span class="p">:</span><span class="w">  </span><span class="s2">"3.56"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"h"</span><span class="p">:</span><span class="w">  </span><span class="s2">"3.77"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"l"</span><span class="p">:</span><span class="w">  </span><span class="s2">"3.21"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"v"</span><span class="p">:</span><span class="w">  </span><span class="s2">"10.234"</span><span class="w"> 
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Bar data is almost the same as the market summary data, except that:</p>
+
+<p>Message type is bar
+There is only one symbol per websocket session
+The interval field i may take multiple values: 1, 5, 30, 160, 360, 1d.
+We stream bar data in batches. Every 30 seconds, we stream bar data messages at all interval levels. You may use these data to update bar chart directly (replace bars). However, you should also update the bar chart using the market trade messages.</p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>m</code></td>
+<td>String</td>
+<td><code>&quot;bar&quot;</code></td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>String</td>
+<td>symbol, e.g. <code>&quot;BTC/USDT&quot;</code></td>
+</tr>
+<tr>
+<td><code>ba</code></td>
+<td>String</td>
+<td>base asset</td>
+</tr>
+<tr>
+<td><code>qa</code></td>
+<td>String</td>
+<td>quote asset</td>
+</tr>
+<tr>
+<td><code>i</code></td>
+<td>String</td>
+<td>bar interval, e.g. <code>&quot;1&quot;, &quot;5&quot;, &quot;30&quot;, &quot;60&quot;, &quot;360&quot;, &quot;1d&quot;</code></td>
+</tr>
+<tr>
+<td><code>t</code></td>
+<td>Long</td>
+<td>UTC timestamp in milliseconds</td>
+</tr>
+<tr>
+<td><code>o</code></td>
+<td>String</td>
+<td>open</td>
+</tr>
+<tr>
+<td><code>c</code></td>
+<td>String</td>
+<td>close</td>
+</tr>
+<tr>
+<td><code>h</code></td>
+<td>String</td>
+<td>high</td>
+</tr>
+<tr>
+<td><code>l</code></td>
+<td>String</td>
+<td>low</td>
+</tr>
+<tr>
+<td><code>v</code></td>
+<td>String</td>
+<td>volume</td>
+</tr>
+</tbody></table>
+<h3 id='data-channel-order-updates'>Data Channel - Order Updates</h3>
+<p>@ToDo</p>
+<h3 id='data-channel-balance-updates'>Data Channel - Balance Updates</h3>
+<p>@ToDo</p>
+<h3 id='client-request-placing-new-order'>Client Request - Placing New Order</h3>
+<blockquote>
+<p>New Order Request</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"messageType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"newOrderRequest"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"time"</span><span class="p">:</span><span class="w">        </span><span class="mi">1528988500000</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"coid"</span><span class="p">:</span><span class="w">        </span><span class="s2">"G4afqeetOz34Wh4SqtJUye6vpYqhe7TH"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w">      </span><span class="s2">"BTC/USDT"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"orderPrice"</span><span class="p">:</span><span class="w">  </span><span class="s2">"5000"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"orderQty"</span><span class="p">:</span><span class="w">    </span><span class="s2">"0.35"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"orderType"</span><span class="p">:</span><span class="w">   </span><span class="s2">"limit"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"side"</span><span class="p">:</span><span class="w">        </span><span class="s2">"buy"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>You can place orders by sending <code>newOrderRequest</code> messages to the server.</p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Data Type</th>
+<th>Value</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>messageType</code></td>
+<td>String</td>
+<td>required, <code>&quot;newOrderRequest&quot;</code></td>
+</tr>
+<tr>
+<td><code>time</code></td>
+<td>Long</td>
+<td>required, UTC timestamp in milliseconds</td>
+</tr>
+<tr>
+<td><code>coid</code></td>
+<td>String</td>
+<td>required, unique ID string of length 32</td>
+</tr>
+<tr>
+<td><code>symbol</code></td>
+<td>String</td>
+<td>required, symbol, e.g. <code>&quot;BTC/USDT&quot;</code></td>
+</tr>
+<tr>
+<td><code>orderPrice</code></td>
+<td>String</td>
+<td>optional, the limit price of the order</td>
+</tr>
+<tr>
+<td><code>orderQty</code></td>
+<td>String</td>
+<td>required, the order quantity as a string, e.g. &quot;1.23&quot;</td>
+</tr>
+<tr>
+<td><code>orderType</code></td>
+<td>String</td>
+<td>required, <code>&quot;limie&quot;</code>, <code>&quot;market&quot;</code>, <code>&quot;stop_limit&quot;</code>, <code>&quot;stop_market&quot;</code></td>
+</tr>
+<tr>
+<td><code>side</code></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><code>postOnly</code></td>
+<td>Boolean</td>
+<td>Optional, <code>true</code> or <code>false</code></td>
+</tr>
+<tr>
+<td><code>stopPrice</code></td>
+<td>String</td>
+<td>the stop price as a string, e.g <code>&quot;10000.50&quot;</code></td>
+</tr>
+<tr>
+<td><code>timeInForce</code></td>
+<td>String</td>
+<td><code>GTC</code> (Good-till-canceled, default) or <code>IOC</code> (immediate-or-cancel)</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Invalid Order Rejection Message</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"m"</span><span class="p">:</span><span class="w">         </span><span class="s2">"order"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"coid"</span><span class="p">:</span><span class="w">      </span><span class="s2">"G4afqeetOz34Wh4SqtJUye6vpYqhe7TH"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w">    </span><span class="s2">"Rejected"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"errorCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"600533"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"reason"</span><span class="p">:</span><span class="w">    </span><span class="s2">"Price is too low from market price."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>If the order is invalid, you will receive an rejection message immediately with <code>coid</code> the same as the new order request message. </p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Data Type</th>
+<th>Value</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>m</code></td>
+<td>String</td>
+<td><code>&quot;order&quot;</code></td>
+</tr>
+<tr>
+<td><code>coid</code></td>
+<td>String</td>
+<td>the <code>coid</code> in the order request</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>String</td>
+<td><code>&quot;Rejected&quot;</code></td>
+</tr>
+<tr>
+<td><code>errorCode</code></td>
+<td>String</td>
+<td>a numeric error code as a string. (We use string format to be consistent with other order messages)</td>
+</tr>
+<tr>
+<td><code>reason</code></td>
+<td>String</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id='client-request-cancel-an-order'>Client Request - Cancel an Order</h3>
+<blockquote>
+<p>Cancel an Order</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"messageType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cancelOrderRequest"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"time"</span><span class="p">:</span><span class="w">        </span><span class="mi">1528988100000</span><span class="p">,</span><span class="w"> 
+  </span><span class="s2">"coid"</span><span class="p">:</span><span class="w">        </span><span class="s2">"Zgu7EabVbGNnnGsCid0MydDA4pa7ighE"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"origCoid"</span><span class="p">:</span><span class="w">    </span><span class="s2">"dHKTlw3Mh4W4Zg9RjkU5cnFopwjC9uWU"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w">      </span><span class="s2">"BTC/USDT"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>@ToDo</p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Data Type</th>
+<th>Value</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>messageType</code></td>
+<td>String</td>
+<td>required, <code>&quot;newOrderRequest&quot;</code></td>
+</tr>
+<tr>
+<td><code>time</code></td>
+<td>Long</td>
+<td>required, UTC timestamp in milliseconds</td>
+</tr>
+<tr>
+<td><code>coid</code></td>
+<td>String</td>
+<td>required, unique ID string of length 32</td>
+</tr>
+<tr>
+<td><code>origCoid</code></td>
+<td>String</td>
+<td>required, the original <code>coid</code> of the order</td>
+</tr>
+<tr>
+<td><code>symbol</code></td>
+<td>String</td>
+<td>required, symbol, e.g. <code>&quot;BTC/USDT&quot;</code></td>
+</tr>
+</tbody></table>
+<h2 id='websocket-for-margin-trading'>WebSocket for Margin Trading</h2>
+<p><code>wss://bitmax.io/&lt;account-group&gt;/api/stream/margin-beta/&lt;symbol&gt;</code></p>
+
+<aside class="notice">This API is in beta version and is subject to change. </aside>
+
+<p>A margin account allows you to increase your purchasing power beyond the account total balance by borrowing assets. Compare to cash trading, 
+margin trading has more complicated trading rules and may carry much greater risks. Please refer to 
+<a href="https://bitmaxhelp.zendesk.com/hc/en-us/articles/360016415774-BitMax-io-Margin-Trading-Rules">BitMax.io Margin Trading Rules</a> for more details. </p>
+<h3 id='data-channel-market-depth'>Data Channel - Market Depth</h3>
+<p>See <a href="#data-channel-market-depth">cash trading market depth</a></p>
+<h3 id='data-channel-market-trades'>Data Channel - Market Trades</h3>
+<p>See <a href="#data-channel-market-trades">cash trading market trades</a></p>
+<h3 id='data-channel-market-summary'>Data Channel - Market Summary</h3>
+<p>See <a href="#data-channel-market-summary">cash trading market summary</a></p>
+<h3 id='data-channel-bar-data'>Data Channel - Bar Data</h3>
+<p>See <a href="#data-channel-market-bar">cash trading market bar data</a></p>
+<h3 id='data-channel-reference-prices'>Data Channel - Reference Prices</h3>
+<blockquote>
+<p>Reference Prices</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"m"</span><span class="p">:</span><span class="w">  </span><span class="s2">"ref-px"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">message</span><span class="w">
+  </span><span class="s2">"ba"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XRP"</span><span class="p">,</span><span class="w">     </span><span class="err">//</span><span class="w"> </span><span class="err">base</span><span class="w"> </span><span class="err">asset</span><span class="w">
+  </span><span class="s2">"qa"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">    </span><span class="err">//</span><span class="w"> </span><span class="err">quote</span><span class="w"> </span><span class="err">asset</span><span class="w">
+  </span><span class="s2">"p"</span><span class="p">:</span><span class="w">  </span><span class="s2">"0.3406"</span><span class="w">   </span><span class="err">//</span><span class="w"> </span><span class="err">price</span><span class="w"> 
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Reference prices are composite price indices for the calculation of margin requirement and forced liquidation. 
+The reference price is computed by taking an average last trade price from the following five exchanges (upon 
+availability at the time of computation) - BitMax.io, Binance, Huobi, OKEx and Poloniex , and removing the 
+highest and lowest price. </p>
+
+<p>BitMax.io reserves the right of updating pricing sources without notice.</p>
+
+<p>The server sends out <code>ref-px</code> message every 10 seconds.</p>
+<h3 id='data-channel-order-updates'>Data Channel - Order Updates</h3>
+<p>See <a href="#data-channel-order-updates">cash trading order updates</a></p>
+<h3 id='data-channel-margin-summary'>Data Channel - Margin Summary</h3>
+<blockquote>
+<p>Margin Summary</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"m"</span><span class="p">:</span><span class="s2">"margin-summary"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">message</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"b"</span><span class="p">:</span><span class="w">   </span><span class="s2">"100000"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">total</span><span class="w"> </span><span class="err">balance</span><span class="w">
+    </span><span class="s2">"pb"</span><span class="p">:</span><span class="w">  </span><span class="s2">"99499.5"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">pending</span><span class="w"> </span><span class="err">(available)</span><span class="w"> </span><span class="err">balance</span><span class="w"> 
+    </span><span class="s2">"nb"</span><span class="p">:</span><span class="w">  </span><span class="s2">"100000"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">net</span><span class="w"> </span><span class="err">asset</span><span class="w">  
+    </span><span class="s2">"eim"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">       </span><span class="err">//</span><span class="w"> </span><span class="err">effective</span><span class="w"> </span><span class="err">initial</span><span class="w"> </span><span class="err">margin</span><span class="w">
+    </span><span class="s2">"emm"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">       </span><span class="err">//</span><span class="w"> </span><span class="err">effective</span><span class="w"> </span><span class="err">maintanence</span><span class="w"> </span><span class="err">margin</span><span class="w">
+    </span><span class="s2">"clv"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">       </span><span class="err">//</span><span class="w"> </span><span class="err">current</span><span class="w"> </span><span class="err">leverage</span><span class="w">
+    </span><span class="s2">"ilv"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.0303"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">deprecated</span><span class="p">,</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">removed</span><span class="w"> </span><span class="err">shortly</span><span class="w">
+    </span><span class="s2">"alv"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">      </span><span class="err">//</span><span class="w"> </span><span class="err">account</span><span class="w"> </span><span class="err">maximum</span><span class="w"> </span><span class="err">leverage</span><span class="w">
+    </span><span class="s2">"cus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-1"</span><span class="p">,</span><span class="w">      </span><span class="err">//</span><span class="w"> </span><span class="err">cusion</span><span class="w"> </span><span class="err">rate</span><span class="w">
+    </span><span class="s2">"pts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"346"</span><span class="w">      </span><span class="err">//</span><span class="w"> </span><span class="err">point</span><span class="w"> </span><span class="err">card</span><span class="w"> </span><span class="err">balance</span><span class="w">
   </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves all kittens.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://example.com/api/kittens</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
-</tr>
-<tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
-</tr>
-</tbody></table>
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-<h2 id='get-a-specific-kitten'>Get a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint retrieves a specific kitten.</p>
+<p>The <code>margin-summary</code> message contains risk metrics of the overall account. It is important to monitor the risk metrics closely and adjust your positions accordingly 
+to avoid forced account liquidation. </p>
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
-</tr>
-</tbody></table>
-<h2 id='delete-a-specific-kitten'>Delete a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<ul>
+<li><code>b</code> - account&#39;s overall total asset value in USDT calculated based on constituent assets&#39; reference prices. </li>
+<li><code>pb</code> - account&#39;s overall pending (available) asset value in USDT.</li>
+<li><code>nb</code> - account&#39;s  overall net asset value, which is calculated as <strong>total asset value - total borrowed amount - total interest owed</strong>, based on USDT value. </li>
+<li><code>eim</code> - effective initial margin. </li>
+<li><code>emm</code> - effective maintanence margin.</li>
+<li><code>clv</code> - current leverage. If the net asset value is positive, <code>clv</code> is defined as the ratio of total asset value and net asset value; if the net asset value is zero or negative, <code>clv</code> is set to be -1 (undefined).</li>
+<li><code>ilv</code> - this field is <strong>deprecated</strong>, it will be removed shortly.</li>
+<li><code>alv</code> - account leverage, the maximum leverage allowed for the current account. This value may increase / decrease based on the account&#39;s net asset value</li>
+<li><code>cus</code> - cushion rate, defined as the the ratio of <strong>net asset value</strong> over <strong>effective maintanence margin</strong> if both values are positive. Otherwise, <code>cus</code> is set to be -1 (undefined). 
+If cushion rate is defined but below 1, your account could be liquidated at any time. </li>
+<li><code>pts</code> - the total balance of your point card for margin interest repayment. </li>
+</ul>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -X DELETE
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre>
+<p>The server emits the <code>margin-summary</code> message along with reference prices updates. </p>
+<h3 id='data-channel-margin-balance'>Data Channel - Margin Balance</h3>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>Margin Balance</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"deleted"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">":("</span><span class="w">
+  </span><span class="s2">"m"</span><span class="p">:</span><span class="s2">"margin-balance"</span><span class="p">,</span><span class="w"> 
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"baseAsset"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"a"</span><span class="p">:</span><span class="w">  </span><span class="s2">"BTC"</span><span class="p">,</span><span class="w">         </span><span class="err">//</span><span class="w"> </span><span class="err">asset</span><span class="w"> </span><span class="err">code</span><span class="w"> 
+      </span><span class="s2">"b"</span><span class="p">:</span><span class="w">  </span><span class="s2">"0"</span><span class="p">,</span><span class="w">           </span><span class="err">//</span><span class="w"> </span><span class="err">total</span><span class="w"> </span><span class="err">balance</span><span class="w">
+      </span><span class="s2">"pb"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">           </span><span class="err">//</span><span class="w"> </span><span class="err">pending</span><span class="w"> </span><span class="err">(available)</span><span class="w"> </span><span class="err">balance</span><span class="w">
+      </span><span class="s2">"br"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">           </span><span class="err">//</span><span class="w"> </span><span class="err">borrowed</span><span class="w"> </span><span class="err">amount</span><span class="w">
+      </span><span class="s2">"i"</span><span class="p">:</span><span class="w">  </span><span class="s2">"0"</span><span class="p">,</span><span class="w">           </span><span class="err">//</span><span class="w"> </span><span class="err">interest</span><span class="w"> </span><span class="err">owed</span><span class="w">
+      </span><span class="s2">"ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">           </span><span class="err">//</span><span class="w"> </span><span class="err">maximum</span><span class="w"> </span><span class="err">sellable</span><span class="w"> </span><span class="err">amount</span><span class="w">
+      </span><span class="s2">"r"</span><span class="p">:</span><span class="w">  </span><span class="s2">"0.00062"</span><span class="w">      </span><span class="err">//</span><span class="w"> </span><span class="err">daily</span><span class="w"> </span><span class="err">interest</span><span class="w"> </span><span class="err">rate</span><span class="w"> 
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"quoteAsset"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"a"</span><span class="p">:</span><span class="w">  </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">        </span><span class="err">//</span><span class="w"> </span><span class="err">asset</span><span class="w"> </span><span class="err">code</span><span class="w"> 
+      </span><span class="s2">"b"</span><span class="p">:</span><span class="w">  </span><span class="s2">"100000"</span><span class="p">,</span><span class="w">      </span><span class="err">//</span><span class="w"> </span><span class="err">total</span><span class="w"> </span><span class="err">balance</span><span class="w">
+      </span><span class="s2">"pb"</span><span class="p">:</span><span class="w"> </span><span class="s2">"99499.5"</span><span class="p">,</span><span class="w">     </span><span class="err">//</span><span class="w"> </span><span class="err">pending</span><span class="w"> </span><span class="err">(available)</span><span class="w"> </span><span class="err">balance</span><span class="w">
+      </span><span class="s2">"br"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">           </span><span class="err">//</span><span class="w"> </span><span class="err">borrowed</span><span class="w"> </span><span class="err">amount</span><span class="w">
+      </span><span class="s2">"i"</span><span class="p">:</span><span class="w">  </span><span class="s2">"0"</span><span class="p">,</span><span class="w">           </span><span class="err">//</span><span class="w"> </span><span class="err">interest</span><span class="w"> </span><span class="err">owed</span><span class="w">
+      </span><span class="s2">"ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"117109.454"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">maximum</span><span class="w"> </span><span class="err">sellable</span><span class="w"> </span><span class="err">amount</span><span class="w">
+      </span><span class="s2">"r"</span><span class="p">:</span><span class="w">  </span><span class="s2">"0.0012"</span><span class="w">       </span><span class="err">//</span><span class="w"> </span><span class="err">daily</span><span class="w"> </span><span class="err">interest</span><span class="w"> </span><span class="err">rate</span><span class="w"> 
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint deletes a specific kitten.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>DELETE http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>The ID of the kitten to delete</td>
-</tr>
-</tbody></table>
-<h1 id='errors'>Errors</h1>
-<aside class="notice">
-This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
-</aside>
+<p>The <code>margin-balance</code> message contains the balance data regarding the current symbol - the symbol specified in the URL of the API call. </p>
 
-<p>The Kittn API uses the following error codes:</p>
+<ul>
+<li><code>a</code> - asset code</li>
+<li><code>b</code> - the asset&#39;s total balance.</li>
+<li><code>pb</code> - the asset&#39;s pending (available) balance. You won&#39;t incurr any borrowing if you try to sell a quantity less than <code>pb</code>.</li>
+<li><code>br</code> - the asset&#39;s borrowed amount, in most cases, when <code>br</code> is positive, <code>pb</code> should be zero, meaning that in order to sell the asset you must increase borrowing. </li>
+<li><code>i</code> - the asset&#39;s total interest owed. </li>
+<li><code>ms</code> - the asset&#39;s maximum sellable amount. It usually includes buying power from your available balance and the additional buying power from your account&#39;s borrowing power. </li>
+<li><code>r</code> - the asset&#39;s daily interest rate. </li>
+</ul>
 
-<table><thead>
-<tr>
-<th>Error Code</th>
-<th>Meaning</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>400</td>
-<td>Bad Request -- Your request is invalid.</td>
-</tr>
-<tr>
-<td>401</td>
-<td>Unauthorized -- Your API key is wrong.</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden -- The kitten requested is hidden for administrators only.</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Not Found -- The specified kitten could not be found.</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed -- You tried to access a kitten with an invalid method.</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable -- You requested a format that isn&#39;t json.</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone -- The kitten requested has been removed from our servers.</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&#39;m a teapot.</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests -- You&#39;re requesting too many kittens! Slow down!</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Internal Server Error -- We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable -- We&#39;re temporarily offline for maintenance. Please try again later.</td>
-</tr>
-</tbody></table>
+<p>The server emits the <code>margin-balance</code> message along with reference prices updates. </p>
 
       </div>
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
                 <a href="#" data-language-name="python">python</a>
-                <a href="#" data-language-name="javascript">javascript</a>
+                <a href="#" data-language-name="java">java</a>
           </div>
       </div>
     </div>
