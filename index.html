@@ -270,6 +270,11 @@
           </li>
           <li>
             <a href="#error-codes" class="toc-h1 toc-link" data-title="Error Codes">Error Codes</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#faq" class="toc-h2 toc-link" data-title="FAQ">FAQ</a>
+                  </li>
+              </ul>
           </li>
       </ul>
         <ul class="toc-footer">
@@ -1278,6 +1283,10 @@ If cushion rate is defined but below 1, your account could be liquidated at any 
 </tr>
 </thead><tbody>
 <tr>
+<td>1900</td>
+<td>Invalid Http Request Input.</td>
+</tr>
+<tr>
 <td>21008</td>
 <td>API key does not have transfer permission</td>
 </tr>
@@ -1286,6 +1295,10 @@ If cushion rate is defined but below 1, your account could be liquidated at any 
 <td>Not enough balance</td>
 </tr>
 </tbody></table>
+<h2 id='faq'>FAQ</h2><h3 id='1900-invalid-http-request-input'>1900 - Invalid Http Request Input.</h3>
+<p>This usually happens when numeric values are provided for parameters of string type. 
+For instance, when placing new orders, we require both order price and order quantity 
+to be strings. You will receive <code>error = 1900</code> if you use numeric value for either of them.</p>
 
       </div>
       <div class="dark-box">
