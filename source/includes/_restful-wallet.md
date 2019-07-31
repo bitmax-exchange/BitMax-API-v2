@@ -10,12 +10,16 @@
 {
   "code": 0,
   "data": [
-  {"asset": "USDT",
+   {
+   "asset": "USDT",
    "blockChain": "Omni",
-   "address": "USDT-vK3FjAbJ2xOq1Hq7QdHxcRXk4E4UKbE1"},
-  {"asset": "USDT",
+   "address": "USDT-vK3FjAbJ2xOq1Hq7QdHxcRXk4E4UKbE1"
+   },
+   {
+   "asset": "USDT",
    "blockChain": "ERC20",
-   "address": "ETH-tlz71zR6KUoQnBSUoTYJG3oJAscqusiK"}
+   "address": "ETH-tlz71zR6KUoQnBSUoTYJG3oJAscqusiK"
+   }
   ],
   "email": "xxx@xxx.com",
   "status": "success" // the request has been submitted to the server
