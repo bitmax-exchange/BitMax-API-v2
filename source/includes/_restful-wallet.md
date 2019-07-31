@@ -2,7 +2,7 @@
 
 
 
-## Get Deposit address of one Asset (api_path=deposit)
+## Get Deposit address of one Asset
 
 > Response
 
