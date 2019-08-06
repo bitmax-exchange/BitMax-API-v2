@@ -4,7 +4,7 @@
 
 ## Get Deposit address of one Asset
 
-> Response
+> Response example (asset = USDT which has two blockchains) 
 
 ```json
 {
@@ -13,12 +13,32 @@
     {
      "asset": "USDT",
      "blockChain": "Omni",
-     "addressData": {"address": "USDT-vK3FjAbJ2xOq1Hq7QdHxcRXk4E4UKbE1"}
+     "addressData": {"address": "17nbKg26jBStZHmdq9jLETHPh8EzjiaQ9J"}
     },
     {
      "asset": "USDT",
      "blockChain": "ERC20",
-     "addressData": {"address": "ETH-tlz71zR6KUoQnBSUoTYJG3oJAscqusiK"}
+     "addressData": {"address": "0x7dcf0192e4a78593fd360dbc2fa50855a3f4505a"}
+    }
+  ],
+  "email": "xxx@xxx.com",
+  "status": "success" // the request has been submitted to the server
+}
+ ```
+ > Response example (asset = XRP which requires both Tag and deposit address for deposit) 
+
+```json
+{
+  "code": 0,
+  "data": [
+    {
+     "asset": "XRP",
+     "blockChain": "Ripple",
+     "addressData": 
+         {
+         "address": "rpinhtY4p35bPmVXPbfWRUtZ1w1K1gYShB",
+         "destTag": "54301"
+         }
     }
   ],
   "email": "xxx@xxx.com",
@@ -26,9 +46,11 @@
 }
  ```
 
+
+
 **HTTP Request**
 
-`POST <account-group>/api/v2/deposit?asset=<asset>`
+`GET <account-group>/api/v2/deposit?asset=<asset>`
 
 **Authentication**
 
