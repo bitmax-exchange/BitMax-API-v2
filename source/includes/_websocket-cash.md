@@ -263,7 +263,7 @@ Field          | Data Type  | Description
   "pb":  "166707.014527793" 
 }
 ```
-Once connected to websocket streams, you will start receiving real time update of your balances. Any change of your balances which is not due to an order will be streamed to you. (The balance change due to an order is streamed as an order update message)
+Once connected to websocket streams, you will start receiving real time balance updates. Trade related balance updates will be included in the order update message, all other updates (deposit/withdraw/transfer between cash and margin accounts, etc) will be included in the balance message.
 
 Field          | Data Type  | Description
 -------------- | ---------- | ---------------------------------------
