@@ -182,12 +182,97 @@ Field    | Data Type | Description
 
 ### Data Channel - Order Updates
 
-@ToDo
+> Order Update Data
 
+```json
+{
+  "m":           "order",
+  "execId":      "31137230",
+  "coid":        "FCmKQLPtKb7ciJitM0TSj9f5oLysa1iW",
+  "orderType":   "Limit",
+  "s":           "BTC/USDT",
+  "t":           1565200977389, 
+  "p":           "11000.00",
+  "q":           "1.0000000",
+  "l":           "0",
+  "f":           "0",
+  "ap":          "0",
+  "bb":          "1000.497910329",
+  "bpb":         "1000.497910329",
+  "qb":          "188504.592479229",
+  "qpb":         "177493.592479229",
+  "fee":         "0",
+  "fa":          "",
+  "bc":          "0",
+  "btmxBal":     "1912.000000000",
+  "side":        "Buy",
+  "status":      "New",
+  "errorCode":   "NULL_VAL",
+  "cat":         "CASH",
+  "ei":          "NULL_VAL"
+}
+```
+
+Once connected to websocket streams, you will start receiving real time update of your own orders. It contains both order execution report and current balances. 
+Since only new order updates will be streamed, it is recommendated that you load the initial snap of all you orders using the [RESTful API GET api/v1/order/open](https://github.com/bitmax-exchange/api-doc/blob/master/bitmax-api-doc-v1.2.md#list-of-all-open-orders).
+
+
+
+
+
+Field          | Data Type  | Description
+-------------- | ---------- | ---------------------------------------
+  `m`          | String     | `"order"`
+  `execId`     | String     | for each user, this is a strictly increasing long integer
+  `coid`       | String     | client order id
+  `origCoid`   | String     | optional, the original order id, see canceling orders for more details 
+  `orderType`  | String     | `"Limit", "Market", "StopLimit", "StopMarket"`
+  `s`          | String     | symbol, e.g. `"BTC/USDT"`
+  `t`          | Long       | UTC timestamp in milliseconds
+  `p`          | String     | optional, limit price, only available for `"Limit"` and `"StopLimit"` orders
+  `sp`         | String     | optional, stop price, only available for stop market and stop limit orders
+  `q`          | String     | order quantity
+  `l`          | String     | last quantity, the quantity executed by the last fill 
+  `f`          | String     | filled quantity, this is the aggregated quantity executed by all past fills
+  `ap`         | String     | average filled price
+  `bb`         | String     | base asset total balance
+  `bpb`        | String     | base asset available balance
+  `qb`         | String     | quote asset total balance
+  `qpb`        | String     | quote asset available balance
+  `fee`        | String     | fee
+  `fa`         | String     | fee asset 
+  `bc`         | String     | if possitive, this is the BTMX commission charged by reverse mining, if negative, this is the mining output of the current fill.
+  `btmxBal`    | String     | optional, the BTMX balance of the current account.
+  `side`       | String     | side
+  `status`     | String     | order status
+  `errorCode`  | String     | if the order is rejected, this field explains why
+  `cat`        | String     | category
+  `ei`         | String     | execution instruction, `"POST"` for post-only orders
 
 ### Data Channel - Balance Updates
 
-@ToDo
+> Balance Update Data
+
+```json
+{
+  "m":  "balance",
+  "execId":  "31428578",
+  "account": "cshnHfBk4eytjL23VBZ0mRTY2Dre6Tcr",
+  "a": "USDT",
+  "b":  "177718.014527793",
+  "pb":  "166707.014527793" 
+}
+```
+Once connected to websocket streams, you will start receiving real time balance updates. Trade related balance updates will be included in the order update message, all other updates (deposit/withdraw/transfer between cash and margin accounts, etc) will be included in the balance message.
+
+Field          | Data Type  | Description
+-------------- | ---------- | ---------------------------------------
+  `m`          | String     | `"balance"`
+  `execId`     | String     | for each user, this is a strictly increasing long integer
+  `account`    | String     | account ID
+  `a`          | String     | asset
+  `b`          | String     | total balance of the asset
+  `pb`         | String     | available balance of the asset
 
 
 ### Client Request - Placing New Order 
@@ -236,6 +321,8 @@ Key           | Data Type | Value
 }
 ```
 
+If the order is valid, you will receive an order update message in which `Status` is `New`.
+
 If the order is invalid, you will receive an rejection message immediately with `coid` the same as the new order request message. 
 
 Key           | Data Type | Value
@@ -261,11 +348,12 @@ Key           | Data Type | Value
 }
 ```
 
-@ToDo
+You can cancel an open order by sending `cancelOrderRequest` messages to the server. If the order is successfully canceled, you will receive an order update message in which `Status` is `Canceled`.
+
 
 Key           | Data Type | Value
 ------------- | --------- | ---------------------------------------------
-`messageType` | String    | required, `"newOrderRequest"`
+`messageType` | String    | required, `"cancelOrderRequest"`
 `time`        | Long      | required, UTC timestamp in milliseconds
 `coid`        | String    | required, unique ID string of length 32
 `origCoid`    | String    | required, the original `coid` of the order 
