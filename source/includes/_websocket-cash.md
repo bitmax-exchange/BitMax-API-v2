@@ -243,7 +243,7 @@ Field        | Data Type | Description
   `status`   | String    | order status
   `errorCode`| String    | if the order is rejected, this field explains why
   `cat`      | String    | category
-  `errorCode`| String    | execution instruction, `"POST"` for post-only orders
+  `ei`       | String    | execution instruction, `"POST"` for post-only orders
 
 ### Data Channel - Balance Updates
 
