@@ -296,6 +296,7 @@ Key           | Data Type | Value
 }
 ```
 
+If the order is valid, you will receive an order update message in which `Status` is `New`.
 If the order is invalid, you will receive an rejection message immediately with `coid` the same as the new order request message. 
 
 Key           | Data Type | Value
@@ -321,11 +322,12 @@ Key           | Data Type | Value
 }
 ```
 
-@ToDo
+You can place orders by sending `cancelOrderRequest` messages to the server.
+
 
 Key           | Data Type | Value
 ------------- | --------- | ---------------------------------------------
-`messageType` | String    | required, `"newOrderRequest"`
+`messageType` | String    | required, `"cancelOrderRequest"`
 `time`        | Long      | required, UTC timestamp in milliseconds
 `coid`        | String    | required, unique ID string of length 32
 `origCoid`    | String    | required, the original `coid` of the order 
