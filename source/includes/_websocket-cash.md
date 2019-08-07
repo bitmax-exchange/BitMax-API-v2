@@ -213,7 +213,7 @@ Field    | Data Type | Description
 }
 ```
 
-Once connected to websocket streams, you will start receiving real time updated of your own orders. It contains both order execution report and current balances. 
+Once connected to websocket streams, you will start receiving real time update of your own orders. It contains both order execution report and current balances. 
 Since only new order updates will be streamed, it is recommendated that you load the initial snap of all you orders using the RESTful API GET api/v1/order/open.
 
 Field          | Data Type  | Description
@@ -232,9 +232,9 @@ Field          | Data Type  | Description
   `f`          | String     | filled quantity, this is the aggregated quantity executed by all past fills
   `ap`         | String     | average filled price
   `bb`         | String     | base asset total balance
-  `bpb`        | String     | base asset pending balance
+  `bpb`        | String     | base asset available balance
   `qb`         | String     | quote asset total balance
-  `qpb`        | String     | quote asset pending balance
+  `qpb`        | String     | quote asset available balance
   `fee`        | String     | fee
   `fa`         | String     | fee asset 
   `bc`         | String     | if possitive, this is the BTMX commission charged by reverse mining, if negative, this is the mining output of the current fill.
@@ -247,7 +247,28 @@ Field          | Data Type  | Description
 
 ### Data Channel - Balance Updates
 
-@ToDo
+> Balance Update Data
+
+```json
+{
+  "m":  "balance",
+  "execId":  "31428578",
+  "account": "cshnHfBk4eytjL23VBZ0mRTY2Dre6Tcr",
+  "a": "USDT",
+  "b":  "177718.014527793",
+  "pb":  "166707.014527793" 
+}
+```
+Once connected to websocket streams, you will start receiving real time update of your balances. Any change of your balances which is not due to an order will be streamed to you. (The balance change due to an order is streamed as an order update message)
+
+Field          | Data Type  | Description
+-------------- | ---------- | ---------------------------------------
+  `m`          | String     | `"balance"`
+  `execId`     | String     | for each user, this is a strictly increasing long integer
+  `account`    | String     | account ID
+  `a`          | String     | asset
+  `b`          | String     | total balance of the asset
+  `pb`         | String     | available balance of the asset
 
 
 ### Client Request - Placing New Order 
@@ -323,7 +344,7 @@ Key           | Data Type | Value
 }
 ```
 
-You can place orders by sending `cancelOrderRequest` messages to the server.
+You can cancel an open order by sending `cancelOrderRequest` messages to the server. If the order is successfully canceled, you will receive an order update message in which `Status` is `Canceled`.
 
 
 Key           | Data Type | Value
