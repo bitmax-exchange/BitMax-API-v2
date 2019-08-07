@@ -297,6 +297,7 @@ Key           | Data Type | Value
 ```
 
 If the order is valid, you will receive an order update message in which `Status` is `New`.
+
 If the order is invalid, you will receive an rejection message immediately with `coid` the same as the new order request message. 
 
 Key           | Data Type | Value
