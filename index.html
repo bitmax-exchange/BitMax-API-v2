@@ -650,6 +650,35 @@ in plain text format and contains the following fields:</p>
 <td>optional, default value <code>false</code>. If <code>true</code>, client will receive bar data of all frequencies (1 minute, 5 minutes, etc.) for the current symbol every 30 seconds.</td>
 </tr>
 </tbody></table>
+
+<p>After sending <code>subscribe</code> message, you will receive a message indicating the subscription is successful or not. </p>
+
+<blockquote>
+<p>Success Subscribe Message (Success Response)</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+</span><span class="s2">"m"</span><span class="p">:</span><span class="w"> </span><span class="s2">"subscribe"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"msg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<table><thead>
+<tr>
+<th>Field Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>m</code></td>
+<td>String</td>
+<td><code>subscribe</code> if the subscription succeeds, <code>error</code> if it fails</td>
+</tr>
+<tr>
+<td><code>msg</code></td>
+<td>String</td>
+<td><code>success</code> if the subscrioption succeeds, or it will print out the error message</td>
+</tr>
+</tbody></table>
 <h2 id='websocket-for-cash-trading'>WebSocket for Cash Trading</h2>
 <aside class="notice">This API is in beta version and is subject to change. </aside>
 
@@ -1013,7 +1042,7 @@ We stream bar data in batches. Every 30 seconds, we stream bar data messages at 
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>Once connected to websocket streams, you will start receiving real time update of your own orders. It contains both order execution report and current balances. 
-Since only new order updates will be streamed, it is recommendated that you load the initial snap of all you orders using the <a href="https://github.com/bitmax-exchange/api-doc/blob/master/bitmax-api-doc-v1.2.md#list-of-all-open-orders">RESTful API GET api/v1/order/open</a>.</p>
+Since only new order updates will be streamed, it is recommendated that you load the initial snap of all you orders using the <a href="https://github.com/bitmax-exchange/api-doc/blob/master/bitmax-api-doc-v1.2.md#list-of-all-open-orders">RESTful API GET api/v1/order/open</a>. <strong>Note that if you only connect to cash trading web socket, you won&#39;t receive order update messages of your margin account and vice versa.</strong></p>
 
 <table><thead>
 <tr>
