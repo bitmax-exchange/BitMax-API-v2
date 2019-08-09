@@ -75,5 +75,5 @@ After sending `subscribe` message, you will receive a message indicating the sub
 Field Name | Data Type | Description
 -----------| --------- | -----------
 `m`        | String    | `subscribe` if the subscription succeeds, `error` if it fails
-`msg`      | String    | `sucess` if the subscrioption succeeds, or it will print out the error message
+`msg`      | String    | `success` if the subscrioption succeeds, or it will print out the error message
 
