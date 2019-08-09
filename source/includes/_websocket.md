@@ -63,3 +63,17 @@ Field Name            | Data Type | Description
 `skipSummary`         | Boolean   | optional, default value `false`. If `true`, client will receive market summary data with rolling 24 hour O/H/L/C price data for all symbols every 30 seconds.
 `skipBars`            | Boolean   | optional, default value `false`. If `true`, client will receive bar data of all frequencies (1 minute, 5 minutes, etc.) for the current symbol every 30 seconds.
 
+After sending `subscribe` message, you will receive a message indicating the subscription is successful or not. 
+> Success Subscribe Message (Success Response)
+
+```json
+{
+"m": "subscribe",
+"msg": "success"
+}
+```
+Field Name | Data Type | Description
+-----------| --------- | -----------
+`m`        | String    | `subscribe` if the subscription succeeds, `error` if it fails
+`msg`      | String    | `sucess` if the subscrioption succeeds, or it will print out the error message
+
