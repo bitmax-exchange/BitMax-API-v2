@@ -12,6 +12,7 @@ toc_footers:
 includes:
   - authentication
   - restful-margin
+  - restful-wallet
   - websocket
   - websocket-cash
   - websocket-margin
