@@ -2,7 +2,7 @@
 
 
 
-## Get Deposit address of one Asset
+## Get Market Trades
 
 > Response example (symbol=BTC/USDT, n=2) 
 
