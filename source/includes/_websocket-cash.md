@@ -321,7 +321,7 @@ Key           | Data Type | Value
 }
 ```
 
-If the order is valid, you will receive an order update message in which `Status` is `New`.
+If the order is valid, you will receive an [order update message](#data-channel-order-updates) in which `Status` is `New`.
 
 If the order is invalid, you will receive an rejection message immediately with `coid` the same as the new order request message. 
 
@@ -348,7 +348,7 @@ Key           | Data Type | Value
 }
 ```
 
-You can cancel an open order by sending `cancelOrderRequest` messages to the server. If the order is successfully canceled, you will receive an order update message in which `Status` is `Canceled`.
+You can cancel an open order by sending `cancelOrderRequest` messages to the server. If the order is successfully canceled, you will receive an [order update message](#data-channel-order-updates) in which `Status` is `Canceled`.
 
 
 Key           | Data Type | Value
