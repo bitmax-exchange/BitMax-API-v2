@@ -255,6 +255,14 @@
               </ul>
           </li>
           <li>
+            <a href="#restful-apis-wallet-deposit-and-withdraw" class="toc-h1 toc-link" data-title="RESTful APIs - Wallet(Deposit and Withdraw)">RESTful APIs - Wallet(Deposit and Withdraw)</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-deposit-address-of-one-asset" class="toc-h2 toc-link" data-title="Get Deposit address of one Asset">Get Deposit address of one Asset</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#websocket-api-beta-version" class="toc-h1 toc-link" data-title="WebSocket API (Beta Version)">WebSocket API (Beta Version)</a>
               <ul class="toc-list-h2">
                   <li>
@@ -564,6 +572,73 @@ margin trading has more complicated trading rules and may carry much greater ris
 <td>amount</td>
 <td>String</td>
 <td>The amount to transfer in string format</td>
+</tr>
+</tbody></table>
+<h1 id='restful-apis-wallet-deposit-and-withdraw'>RESTful APIs - Wallet(Deposit and Withdraw)</h1><h2 id='get-deposit-address-of-one-asset'>Get Deposit address of one Asset</h2>
+<blockquote>
+<p>Response example (asset = USDT which has two blockchains) </p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"blockChain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Omni"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"addressData"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"17nbKg26jBStZHmdq9jLETHPh8EzjiaQ9J"</span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"blockChain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ERC20"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"addressData"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x7dcf0192e4a78593fd360dbc2fa50855a3f4505a"</span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx@xxx.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">request</span><span class="w"> </span><span class="err">has</span><span class="w"> </span><span class="err">been</span><span class="w"> </span><span class="err">submitted</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">server</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Response example (asset = XRP which requires both Tag and deposit address for deposit) </p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XRP"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"blockChain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ripple"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"addressData"</span><span class="p">:</span><span class="w"> 
+         </span><span class="p">{</span><span class="w">
+         </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rpinhtY4p35bPmVXPbfWRUtZ1w1K1gYShB"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"destTag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"54301"</span><span class="w">
+         </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx@xxx.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">request</span><span class="w"> </span><span class="err">has</span><span class="w"> </span><span class="err">been</span><span class="w"> </span><span class="err">submitted</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">server</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p><strong>HTTP Request</strong></p>
+
+<p><code>GET &lt;account-group&gt;/api/v2/deposit?asset=&lt;asset&gt;</code></p>
+
+<p><strong>Authentication</strong></p>
+
+<p>You must have view permission enabled for the API key.</p>
+
+<p>You must sign message <code>&lt;timestamp&gt;+deposit</code> and included the signature in the header.</p>
+
+<p><strong>Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>asset</td>
+<td>String</td>
+<td>Asset code, e.g. <code>&quot;BTC&quot;</code></td>
 </tr>
 </tbody></table>
 <h1 id='websocket-api-beta-version'>WebSocket API (Beta Version)</h1><h2 id='websocket-data-feed'>WebSocket Data Feed</h2>
