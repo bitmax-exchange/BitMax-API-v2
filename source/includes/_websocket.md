@@ -25,7 +25,7 @@ permission enabled as well.
 You must sign the following messages and included the signature in the header:
 
 * cash trading: `<timestamp>+stream/cash-beta`
-* margin trading: `<timestamp>+stream/cash-beta`
+* margin trading: `<timestamp>+stream/margin-beta`
 
 
 ### WebSocket Authentication 
@@ -60,8 +60,8 @@ Field Name            | Data Type | Description
 `messageType`         | String    | set this field to `subscribe` in the subscribe message.
 `marketDepthLevel`    | Integer   | optional, default value 20. This field specifies the max number of price levels on each side to be included in the first market depth message.
 `recentTradeMaxCount` | Integer   | optional, default value 20. This field specifies the max number of recent trades to be included in the first market trades message.
-`skipSummary`         | Boolean   | optional, default value `false`. If `true`, client will receive market summary data with rolling 24 hour O/H/L/C price data for all symbols every 30 seconds.
-`skipBars`            | Boolean   | optional, default value `false`. If `true`, client will receive bar data of all frequencies (1 minute, 5 minutes, etc.) for the current symbol every 30 seconds.
+`skipSummary`         | Boolean   | optional, default value `false`. If `false`, client will receive market summary data with rolling 24 hour O/H/L/C price data for all symbols every 30 seconds.
+`skipBars`            | Boolean   | optional, default value `false`. If `false`, client will receive bar data of all frequencies (1 minute, 5 minutes, etc.) for the current symbol every 30 seconds.
 
 After sending `subscribe` message, you will receive a message indicating the subscription is successful or not. 
 > Success Subscribe Message (Success Response)
