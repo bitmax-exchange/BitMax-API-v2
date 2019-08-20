@@ -30,7 +30,7 @@ margin trading has more complicated trading rules and may carry much greater ris
     "currentLeverage": "1.0466",                          //Current Leverage
     "accountMaxLeverage": "10",                           //Maximum Leverage
     "cushion": "100",                                     //Cushion Rate
-    "pointsBalance": '1.466680936'                        //Available(Pts)
+    "pointsBalance": "1.466680936"                        //Available(Pts)
   },
   "email": "xxx@xxx.com",
   "status": "success" // the request has been submitted to the server
