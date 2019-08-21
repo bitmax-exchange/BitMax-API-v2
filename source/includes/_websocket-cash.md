@@ -213,7 +213,7 @@ Field    | Data Type | Description
 }
 ```
 
-Once connected to websocket streams, you will start receiving real time update of your own orders. It contains both order execution report and current balances. 
+Once connected to websocket streams, you will start receiving real time updates of **all** your own orders (not only the orders of the subscribtion symbol). It contains both order execution report and current balances. 
 Since only new order updates will be streamed, it is recommendated that you load the initial snap of all you orders using the [RESTful API GET api/v1/order/open](https://github.com/bitmax-exchange/api-doc/blob/master/bitmax-api-doc-v1.2.md#list-of-all-open-orders). **Note that if you only connect to cash trading web socket, you won't receive order update messages of your margin account and vice versa.**
 
 
@@ -321,7 +321,7 @@ Key           | Data Type | Value
 }
 ```
 
-If the order is valid, you will receive an order update message in which `Status` is `New`.
+If the order is valid, you will receive an [order update message](#data-channel-order-updates) in which `Status` is `New`.
 
 If the order is invalid, you will receive an rejection message immediately with `coid` the same as the new order request message. 
 
@@ -348,7 +348,7 @@ Key           | Data Type | Value
 }
 ```
 
-You can cancel an open order by sending `cancelOrderRequest` messages to the server. If the order is successfully canceled, you will receive an order update message in which `Status` is `Canceled`.
+You can cancel an open order by sending `cancelOrderRequest` messages to the server. If the order is successfully canceled, you will receive an [order update message](#data-channel-order-updates) in which `Status` is `Canceled`.
 
 
 Key           | Data Type | Value

@@ -10,9 +10,10 @@ toc_footers:
   - <a href='https://bitmax.io'>BitMax.io</a>
 
 includes:
+  - restful-market
   - authentication
-  - restful-margin
   - restful-wallet
+  - restful-margin
   - websocket
   - websocket-cash
   - websocket-margin
