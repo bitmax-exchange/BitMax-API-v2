@@ -15,7 +15,43 @@ margin trading has more complicated trading rules and may carry much greater ris
 
 [Margin Balance - All V1](https://github.com/bitmax-exchange/api-doc/blob/master/bitmax-api-doc-v1.2.md#list-all-balances-of-the-margin-account-api_pathmarginbalance)
 
+## Get Risk(Summary) of one Symbol of the Margin Account
 
+> Response
+
+```json
+{
+  "code": 0,
+  "data": {
+    "totalBalanceInUSDT": "111300.232045955",             //Total Asset (in USDT)
+    "netBalanceInUSDT": "106348.644635388",               //Net Asset (in USDT)
+    "effectiveInitialMargin": "551.54026784",             //Init. Margin Req.
+    "effectiveMaintenanceMargin": "261.184132719",        //Min Margin Req.
+    "currentLeverage": "1.0466",                          //Current Leverage
+    "accountMaxLeverage": "10",                           //Maximum Leverage
+    "cushion": "100",                                     //Cushion Rate
+    "pointsBalance": "1.466680936"                        //Available(Pts)
+  },
+  "email": "xxx@xxx.com",
+  "status": "success" // the request has been submitted to the server
+}
+ ```
+
+**HTTP Request**
+
+`GET <account-group>/api/v2/margin/risk?symbol=<symbol>`
+
+**Authentication**
+
+You must have view permission enabled for the API key.
+
+You must sign message `<timestamp>+margin/risk` and included the signature in the header.
+
+**Parameters**
+
+Name   | Data Type | Description
+------ | --------- | -----------------
+symbol | String    | symbol, e.g. `"BTC/USDT"`
 
 ## Transfer Asset from Cash Account to Margin Account
 
