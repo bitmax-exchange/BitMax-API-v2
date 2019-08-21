@@ -195,6 +195,7 @@ Field    | Data Type | Description
   "p":           "11000.00",
   "q":           "1.0000000",
   "l":           "0",
+  "lp":          "0",
   "f":           "0",
   "ap":          "0",
   "bb":          "1000.497910329",
@@ -233,6 +234,7 @@ Field          | Data Type  | Description
   `sp`         | String     | optional, stop price, only available for stop market and stop limit orders
   `q`          | String     | order quantity
   `l`          | String     | last quantity, the quantity executed by the last fill 
+  `lp`         | String     | last price, the price executed by the last fill
   `f`          | String     | filled quantity, this is the aggregated quantity executed by all past fills
   `ap`         | String     | average filled price
   `bb`         | String     | base asset total balance
