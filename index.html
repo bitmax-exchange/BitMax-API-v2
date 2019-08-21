@@ -224,6 +224,14 @@
             <a href="#bitmax-api-documentation-v2" class="toc-h1 toc-link" data-title="BitMax API Documentation V2">BitMax API Documentation V2</a>
           </li>
           <li>
+            <a href="#restful-apis-public" class="toc-h1 toc-link" data-title="RESTful APIs - Public">RESTful APIs - Public</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-market-trades" class="toc-h2 toc-link" data-title="Get Market Trades">Get Market Trades</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
               <ul class="toc-list-h2">
                   <li>
@@ -238,6 +246,14 @@
               </ul>
           </li>
           <li>
+            <a href="#restful-apis-wallet-deposit-and-withdraw" class="toc-h1 toc-link" data-title="RESTful APIs - Wallet(Deposit and Withdraw)">RESTful APIs - Wallet(Deposit and Withdraw)</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-deposit-address-of-one-asset" class="toc-h2 toc-link" data-title="Get Deposit address of one Asset">Get Deposit address of one Asset</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#restful-apis-margin-trading" class="toc-h1 toc-link" data-title="RESTful APIs - Margin Trading">RESTful APIs - Margin Trading</a>
               <ul class="toc-list-h2">
                   <li>
@@ -247,18 +263,13 @@
                     <a href="#list-all-balance-of-the-margin-account" class="toc-h2 toc-link" data-title="List all Balance of the Margin Account">List all Balance of the Margin Account</a>
                   </li>
                   <li>
+                    <a href="#get-risk-summary-of-one-symbol-of-the-margin-account" class="toc-h2 toc-link" data-title="Get Risk(Summary) of one Symbol of the Margin Account">Get Risk(Summary) of one Symbol of the Margin Account</a>
+                  </li>
+                  <li>
                     <a href="#transfer-asset-from-cash-account-to-margin-account" class="toc-h2 toc-link" data-title="Transfer Asset from Cash Account to Margin Account">Transfer Asset from Cash Account to Margin Account</a>
                   </li>
                   <li>
                     <a href="#transfer-asset-from-margin-account-to-cash-account" class="toc-h2 toc-link" data-title="Transfer Asset from Margin Account to Cash Account">Transfer Asset from Margin Account to Cash Account</a>
-                  </li>
-              </ul>
-          </li>
-          <li>
-            <a href="#restful-apis-wallet-deposit-and-withdraw" class="toc-h1 toc-link" data-title="RESTful APIs - Wallet(Deposit and Withdraw)">RESTful APIs - Wallet(Deposit and Withdraw)</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#get-deposit-address-of-one-asset" class="toc-h2 toc-link" data-title="Get Deposit address of one Asset">Get Deposit address of one Asset</a>
                   </li>
               </ul>
           </li>
@@ -299,6 +310,91 @@ to increase coverage extensively. </p>
 <p>Meanwhile, please refer to <a href="https://github.com/bitmax-exchange/api-doc">BitMax | API Document</a> for a more complete set of APIs. </p>
 
 <aside class="warning">Please note that this document contains beta APIs subject to further changes.</aside>
+<h1 id='restful-apis-public'>RESTful APIs - Public</h1><h2 id='get-market-trades'>Get Market Trades</h2>
+<blockquote>
+<p>Response example (symbol=BTC/USDT, n=2) </p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"m"</span><span class="p">:</span><span class="w"> </span><span class="s2">"marketTrades"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC/USDT"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"trades"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"bm"</span><span class="p">:</span><span class="w"> </span><span class="err">True</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">72057594043333564</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"p"</span><span class="p">:</span><span class="w">  </span><span class="s2">"11406.35"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"q"</span><span class="p">:</span><span class="w">  </span><span class="s2">"0.0305710"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"t"</span><span class="p">:</span><span class="w">  </span><span class="mi">1565646523666</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"bm"</span><span class="p">:</span><span class="w"> </span><span class="err">True</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">72057594043333566</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"p"</span><span class="p">:</span><span class="w">  </span><span class="s2">"11406.00"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"q"</span><span class="p">:</span><span class="w">  </span><span class="s2">"1.4226290"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"t"</span><span class="p">:</span><span class="w">  </span><span class="mi">1565646523666</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p><strong>HTTP Request</strong></p>
+
+<p><code>GET api/v2/symbol=&lt;symbol&gt;&amp;n=&lt;n&gt;</code></p>
+
+<p><strong>Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>symbol</td>
+<td>String</td>
+<td>a valid smbol, e.g. <code>symbol=ETH-BTC</code></td>
+</tr>
+<tr>
+<td>n</td>
+<td>Int</td>
+<td>number of trades to be included in the response. n is currently limited to 100 or fewer. e.g. <code>n=10</code></td>
+</tr>
+</tbody></table>
+
+<p>Each element in <code>trades</code> is an object containing recent trade data with the following fields:</p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>bm</code></td>
+<td>Boolean</td>
+<td>if <code>true</code>, the buyer of the trade is the market maker</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>Long</td>
+<td>Unique ID of the market trade</td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td>String</td>
+<td>price</td>
+</tr>
+<tr>
+<td><code>q</code></td>
+<td>String</td>
+<td>quantity</td>
+</tr>
+<tr>
+<td><code>t</code></td>
+<td>Long</td>
+<td>timestamp</td>
+</tr>
+</tbody></table>
 <h1 id='authentication'>Authentication</h1>
 <p>The authentication process for <code>v2</code> APIs are a bit different from the old version:</p>
 
@@ -464,6 +560,73 @@ the <code>code</code> field with value other than <code>0</code> and a <code>mes
 <td>Unable to verify API signature: signature mismatch.</td>
 </tr>
 </tbody></table>
+<h1 id='restful-apis-wallet-deposit-and-withdraw'>RESTful APIs - Wallet(Deposit and Withdraw)</h1><h2 id='get-deposit-address-of-one-asset'>Get Deposit address of one Asset</h2>
+<blockquote>
+<p>Response example (asset = USDT which has two blockchains) </p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"blockChain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Omni"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"addressData"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"17nbKg26jBStZHmdq9jLETHPh8EzjiaQ9J"</span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"blockChain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ERC20"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"addressData"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x7dcf0192e4a78593fd360dbc2fa50855a3f4505a"</span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx@xxx.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">request</span><span class="w"> </span><span class="err">has</span><span class="w"> </span><span class="err">been</span><span class="w"> </span><span class="err">submitted</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">server</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Response example (asset = XRP which requires both Tag and deposit address for deposit) </p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XRP"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"blockChain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ripple"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"addressData"</span><span class="p">:</span><span class="w"> 
+         </span><span class="p">{</span><span class="w">
+         </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rpinhtY4p35bPmVXPbfWRUtZ1w1K1gYShB"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"destTag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"54301"</span><span class="w">
+         </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx@xxx.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">request</span><span class="w"> </span><span class="err">has</span><span class="w"> </span><span class="err">been</span><span class="w"> </span><span class="err">submitted</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">server</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p><strong>HTTP Request</strong></p>
+
+<p><code>GET &lt;account-group&gt;/api/v2/deposit?asset=&lt;asset&gt;</code></p>
+
+<p><strong>Authentication</strong></p>
+
+<p>You must have view permission enabled for the API key.</p>
+
+<p>You must sign message <code>&lt;timestamp&gt;+deposit</code> and included the signature in the header.</p>
+
+<p><strong>Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>asset</td>
+<td>String</td>
+<td>Asset code, e.g. <code>&quot;BTC&quot;</code></td>
+</tr>
+</tbody></table>
 <h1 id='restful-apis-margin-trading'>RESTful APIs - Margin Trading</h1>
 <p>A margin account allows you to increase your purchasing power beyond the account total balance by borrowing assets. Compare to cash trading, 
 margin trading has more complicated trading rules and may carry much greater risks. Please refer to 
@@ -472,6 +635,51 @@ margin trading has more complicated trading rules and may carry much greater ris
 <p><a href="https://github.com/bitmax-exchange/api-doc/blob/master/bitmax-api-doc-v1.2.md#get-balance-of-one-asset-of-the-margin-account-api_pathmarginbalance">Margin Balance - Single Balance V1</a></p>
 <h2 id='list-all-balance-of-the-margin-account'>List all Balance of the Margin Account</h2>
 <p><a href="https://github.com/bitmax-exchange/api-doc/blob/master/bitmax-api-doc-v1.2.md#list-all-balances-of-the-margin-account-api_pathmarginbalance">Margin Balance - All V1</a></p>
+<h2 id='get-risk-summary-of-one-symbol-of-the-margin-account'>Get Risk(Summary) of one Symbol of the Margin Account</h2>
+<blockquote>
+<p>Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"totalBalanceInUSDT"</span><span class="p">:</span><span class="w"> </span><span class="s2">"111300.232045955"</span><span class="p">,</span><span class="w">             </span><span class="err">//Total</span><span class="w"> </span><span class="err">Asset</span><span class="w"> </span><span class="err">(in</span><span class="w"> </span><span class="err">USDT)</span><span class="w">
+    </span><span class="s2">"netBalanceInUSDT"</span><span class="p">:</span><span class="w"> </span><span class="s2">"106348.644635388"</span><span class="p">,</span><span class="w">               </span><span class="err">//Net</span><span class="w"> </span><span class="err">Asset</span><span class="w"> </span><span class="err">(in</span><span class="w"> </span><span class="err">USDT)</span><span class="w">
+    </span><span class="s2">"effectiveInitialMargin"</span><span class="p">:</span><span class="w"> </span><span class="s2">"551.54026784"</span><span class="p">,</span><span class="w">             </span><span class="err">//Init.</span><span class="w"> </span><span class="err">Margin</span><span class="w"> </span><span class="err">Req.</span><span class="w">
+    </span><span class="s2">"effectiveMaintenanceMargin"</span><span class="p">:</span><span class="w"> </span><span class="s2">"261.184132719"</span><span class="p">,</span><span class="w">        </span><span class="err">//Min</span><span class="w"> </span><span class="err">Margin</span><span class="w"> </span><span class="err">Req.</span><span class="w">
+    </span><span class="s2">"currentLeverage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0466"</span><span class="p">,</span><span class="w">                          </span><span class="err">//Current</span><span class="w"> </span><span class="err">Leverage</span><span class="w">
+    </span><span class="s2">"accountMaxLeverage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">                           </span><span class="err">//Maximum</span><span class="w"> </span><span class="err">Leverage</span><span class="w">
+    </span><span class="s2">"cushion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100"</span><span class="p">,</span><span class="w">                                     </span><span class="err">//Cushion</span><span class="w"> </span><span class="err">Rate</span><span class="w">
+    </span><span class="s2">"pointsBalance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.466680936"</span><span class="w">                        </span><span class="err">//Available(Pts)</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx@xxx.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">request</span><span class="w"> </span><span class="err">has</span><span class="w"> </span><span class="err">been</span><span class="w"> </span><span class="err">submitted</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">server</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p><strong>HTTP Request</strong></p>
+
+<p><code>GET &lt;account-group&gt;/api/v2/margin/risk?symbol=&lt;symbol&gt;</code></p>
+
+<p><strong>Authentication</strong></p>
+
+<p>You must have view permission enabled for the API key.</p>
+
+<p>You must sign message <code>&lt;timestamp&gt;+margin/risk</code> and included the signature in the header.</p>
+
+<p><strong>Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>symbol</td>
+<td>String</td>
+<td>symbol, e.g. <code>&quot;BTC/USDT&quot;</code></td>
+</tr>
+</tbody></table>
 <h2 id='transfer-asset-from-cash-account-to-margin-account'>Transfer Asset from Cash Account to Margin Account</h2>
 <blockquote>
 <p>Request Body - Transfer Asset from Cash Account to Margin Account</p>
@@ -574,73 +782,6 @@ margin trading has more complicated trading rules and may carry much greater ris
 <td>The amount to transfer in string format</td>
 </tr>
 </tbody></table>
-<h1 id='restful-apis-wallet-deposit-and-withdraw'>RESTful APIs - Wallet(Deposit and Withdraw)</h1><h2 id='get-deposit-address-of-one-asset'>Get Deposit address of one Asset</h2>
-<blockquote>
-<p>Response example (asset = USDT which has two blockchains) </p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"blockChain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Omni"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"addressData"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"17nbKg26jBStZHmdq9jLETHPh8EzjiaQ9J"</span><span class="p">}</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"blockChain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ERC20"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"addressData"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x7dcf0192e4a78593fd360dbc2fa50855a3f4505a"</span><span class="p">}</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">],</span><span class="w">
-  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx@xxx.com"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">request</span><span class="w"> </span><span class="err">has</span><span class="w"> </span><span class="err">been</span><span class="w"> </span><span class="err">submitted</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">server</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<blockquote>
-<p>Response example (asset = XRP which requires both Tag and deposit address for deposit) </p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XRP"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"blockChain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ripple"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"addressData"</span><span class="p">:</span><span class="w"> 
-         </span><span class="p">{</span><span class="w">
-         </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rpinhtY4p35bPmVXPbfWRUtZ1w1K1gYShB"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"destTag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"54301"</span><span class="w">
-         </span><span class="p">}</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">],</span><span class="w">
-  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx@xxx.com"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">request</span><span class="w"> </span><span class="err">has</span><span class="w"> </span><span class="err">been</span><span class="w"> </span><span class="err">submitted</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">server</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p><strong>HTTP Request</strong></p>
-
-<p><code>GET &lt;account-group&gt;/api/v2/deposit?asset=&lt;asset&gt;</code></p>
-
-<p><strong>Authentication</strong></p>
-
-<p>You must have view permission enabled for the API key.</p>
-
-<p>You must sign message <code>&lt;timestamp&gt;+deposit</code> and included the signature in the header.</p>
-
-<p><strong>Parameters</strong></p>
-
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Data Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>asset</td>
-<td>String</td>
-<td>Asset code, e.g. <code>&quot;BTC&quot;</code></td>
-</tr>
-</tbody></table>
 <h1 id='websocket-api-beta-version'>WebSocket API (Beta Version)</h1><h2 id='websocket-data-feed'>WebSocket Data Feed</h2>
 <blockquote>
 <p>websocket URL examples:</p>
@@ -666,7 +807,7 @@ permission enabled as well.</p>
 
 <ul>
 <li>cash trading: <code>&lt;timestamp&gt;+stream/cash-beta</code></li>
-<li>margin trading: <code>&lt;timestamp&gt;+stream/cash-beta</code></li>
+<li>margin trading: <code>&lt;timestamp&gt;+stream/margin-beta</code></li>
 </ul>
 <h3 id='websocket-authentication'>WebSocket Authentication</h3>
 <p>Connecting to websocket API follows almost the same authentication process as authenticated RESTful APIs. You need to include the following
@@ -717,12 +858,12 @@ in plain text format and contains the following fields:</p>
 <tr>
 <td><code>skipSummary</code></td>
 <td>Boolean</td>
-<td>optional, default value <code>false</code>. If <code>true</code>, client will receive market summary data with rolling 24 hour O/H/L/C price data for all symbols every 30 seconds.</td>
+<td>optional, default value <code>false</code>. If <code>false</code>, client will receive market summary data with rolling 24 hour O/H/L/C price data for all symbols every 30 seconds.</td>
 </tr>
 <tr>
 <td><code>skipBars</code></td>
 <td>Boolean</td>
-<td>optional, default value <code>false</code>. If <code>true</code>, client will receive bar data of all frequencies (1 minute, 5 minutes, etc.) for the current symbol every 30 seconds.</td>
+<td>optional, default value <code>false</code>. If <code>false</code>, client will receive bar data of all frequencies (1 minute, 5 minutes, etc.) for the current symbol every 30 seconds.</td>
 </tr>
 </tbody></table>
 
@@ -1099,6 +1240,7 @@ We stream bar data in batches. Every 30 seconds, we stream bar data messages at 
   </span><span class="s2">"p"</span><span class="p">:</span><span class="w">           </span><span class="s2">"11000.00"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"q"</span><span class="p">:</span><span class="w">           </span><span class="s2">"1.0000000"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"l"</span><span class="p">:</span><span class="w">           </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"lp"</span><span class="p">:</span><span class="w">          </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"f"</span><span class="p">:</span><span class="w">           </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"ap"</span><span class="p">:</span><span class="w">          </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"bb"</span><span class="p">:</span><span class="w">          </span><span class="s2">"1000.497910329"</span><span class="p">,</span><span class="w">
@@ -1116,7 +1258,7 @@ We stream bar data in batches. Every 30 seconds, we stream bar data messages at 
   </span><span class="s2">"ei"</span><span class="p">:</span><span class="w">          </span><span class="s2">"NULL_VAL"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>Once connected to websocket streams, you will start receiving real time update of your own orders. It contains both order execution report and current balances. 
+<p>Once connected to websocket streams, you will start receiving real time updates of <strong>all</strong> your own orders (not only the orders of the subscribtion symbol). It contains both order execution report and current balances. 
 Since only new order updates will be streamed, it is recommendated that you load the initial snap of all you orders using the <a href="https://github.com/bitmax-exchange/api-doc/blob/master/bitmax-api-doc-v1.2.md#list-of-all-open-orders">RESTful API GET api/v1/order/open</a>. <strong>Note that if you only connect to cash trading web socket, you won&#39;t receive order update messages of your margin account and vice versa.</strong></p>
 
 <table><thead>
@@ -1180,6 +1322,11 @@ Since only new order updates will be streamed, it is recommendated that you load
 <td><code>l</code></td>
 <td>String</td>
 <td>last quantity, the quantity executed by the last fill</td>
+</tr>
+<tr>
+<td><code>lp</code></td>
+<td>String</td>
+<td>last price, the price executed by the last fill</td>
 </tr>
 <tr>
 <td><code>f</code></td>
@@ -1402,7 +1549,7 @@ Since only new order updates will be streamed, it is recommendated that you load
   </span><span class="s2">"reason"</span><span class="p">:</span><span class="w">    </span><span class="s2">"Price is too low from market price."</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>If the order is valid, you will receive an order update message in which <code>Status</code> is <code>New</code>.</p>
+<p>If the order is valid, you will receive an <a href="#data-channel-order-updates">order update message</a> in which <code>Status</code> is <code>New</code>.</p>
 
 <p>If the order is invalid, you will receive an rejection message immediately with <code>coid</code> the same as the new order request message. </p>
 
@@ -1451,7 +1598,7 @@ Since only new order updates will be streamed, it is recommendated that you load
   </span><span class="s2">"symbol"</span><span class="p">:</span><span class="w">      </span><span class="s2">"BTC/USDT"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>You can cancel an open order by sending <code>cancelOrderRequest</code> messages to the server. If the order is successfully canceled, you will receive an order update message in which <code>Status</code> is <code>Canceled</code>.</p>
+<p>You can cancel an open order by sending <code>cancelOrderRequest</code> messages to the server. If the order is successfully canceled, you will receive an <a href="#data-channel-order-updates">order update message</a> in which <code>Status</code> is <code>Canceled</code>.</p>
 
 <table><thead>
 <tr>
