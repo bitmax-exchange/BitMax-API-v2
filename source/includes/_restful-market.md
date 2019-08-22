@@ -31,7 +31,7 @@
 
 **HTTP Request**
 
-`GET api/v2/symbol=<symbol>&n=<n>`
+`GET api/v2/trades/symbol=<symbol>&n=<n>`
 
 **Parameters**
 
