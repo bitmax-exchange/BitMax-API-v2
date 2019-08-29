@@ -40,7 +40,7 @@ fields in the request header:
 
 ### Subscribe to WebSocket Streams 
 
-After connecting to websocket, you need to send an `subscribe` message to start receiving data. The subscribe message is a JSON object 
+After connecting to websocket, you need to send an `subscribe` message to start receiving data. (Note that unlike V1, you will not receive any data unless you sent the `subscribe` in V2)The subscribe message is a JSON object 
 in plain text format and contains the following fields:
 
 > Subscribe Message
