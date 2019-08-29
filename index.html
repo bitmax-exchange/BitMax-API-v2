@@ -819,7 +819,7 @@ fields in the request header:</p>
 <li><code>x-auth-timestamp</code> - the current UTC timestamp in milliseconds.</li>
 </ul>
 <h3 id='subscribe-to-websocket-streams'>Subscribe to WebSocket Streams</h3>
-<p>After connecting to websocket, you need to send an <code>subscribe</code> message to start receiving data. The subscribe message is a JSON object 
+<p>After connecting to websocket, you need to send an <code>subscribe</code> message to start receiving data. (Note that unlike V1, you will not receive any data unless you sent the <code>subscribe</code> in V2) The subscribe message is a JSON object 
 in plain text format and contains the following fields:</p>
 
 <blockquote>
