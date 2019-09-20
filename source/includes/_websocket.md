@@ -77,3 +77,31 @@ Field Name | Data Type | Description
 `m`        | String    | `subscribe` if the subscription succeeds, `error` if it fails
 `msg`      | String    | `success` if the subscrioption succeeds, or it will print out the error message
 
+### Ping/Pong
+
+After connected to websocket, you can send a `ping` message to the server. After receiving the `ping` message, the server will response with a `pong` message. The `pong` message has a `ts` field indicating the server time .
+> Ping Message
+
+```json
+{
+"m": "ping"
+}
+```
+
+> Pong Message
+
+```json
+{
+"m": "pong",
+"ts": 1569016717541
+}
+```
+
+
+Field Name | Data Type | Description
+-----------| --------- | -----------
+`m`        | String    | `pong`
+`ts`       | Long      |  timestamp of the server time in milliseconds
+
+
+
