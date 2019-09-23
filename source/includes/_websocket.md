@@ -84,7 +84,7 @@ After connected to websocket, you can send a `ping` message to the server. After
 
 ```json
 {
-"m": "ping"
+"messageType": "ping"
 }
 ```
 
